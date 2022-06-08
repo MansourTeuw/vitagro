@@ -68,6 +68,7 @@
         <li><a href="#portfolio" class="page-scroll">Nos Produits</a></li>
         <li><a href="#testimonials" class="page-scroll">Témoignages</a></li>
         <li><a href="#contact" class="page-scroll">Contact</a></li>
+        <li><a href="login.php" class="page-scroll">Connexion</a></li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -311,7 +312,7 @@
     </div>
     <div class="col-md-10 col-md-offset-1 contact-info">
       <div class="col-md-4">
-        <h3>Address</h3>
+        <h3>Adresse</h3>
         <hr>
         <div class="contact-item">
           <p>4321 California St,</p>
@@ -373,7 +374,7 @@
           <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
         </ul>
       </div>
-      <p>&copy; 2016 Landscaper. Designed by <a href="http://www.templatewire.com" rel="nofollow">TemplateWire</a></p>
+      <p>&copy; <?= date("Y"); ?> Vitagro. Designed by <a href="http://www.psej.net" rel="nofollow">PSEJ</a></p>
     </div>
   </div>
 </div>
