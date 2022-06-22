@@ -1,1 +1,0 @@
-Gestion Automatisée des Parcelles
