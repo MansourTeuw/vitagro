@@ -72,21 +72,37 @@
                 <div class="form-horizontal">
 
                   <div class="form-group">
-                    <label class="control-label col-sm-4">Fullname</label>
+                    <label class="control-label col-sm-4">Titre</label>
                     <div class="col-sm-6">
-                      <input type="text" placeholder="Enter Employee Name" name="em_fullname" list="expense" class="form-control input-custom" id="default" required>
+                      <input type="text" placeholder="Le nom de l'espace" name="land_name" list="expense" class="form-control input-custom" id="default" required>
                     </div>
                   </div>
                    <div class="form-group">
-                    <label class="control-label col-sm-4">Username</label>
+                    <label class="control-label col-sm-4">Description</label>
                     <div class="col-sm-6">
-                      <input type="text" placeholder="Enter Employee username" name="em_username" class="form-control input-custom" required>
+                      <input type="text" placeholder="Description de l'espace" name="land_description" class="form-control input-custom" required>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-4">Email</label>
+                    <label class="control-label col-sm-4">Dimension</label>
                     <div class="col-sm-6">
-                      <input type="email" placeholder="Enter Employee Email" name="em_email" class="form-control input-custom" required>
+                      <input type="text" placeholder="Dimension de l'espace" name="land_dimension" class="form-control input-custom" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Type d'activités</label>
+                    <div class="col-sm-6">
+                      <select name="activities" id="">
+                        <option value="">Selectionnez une activité....</option>
+                        <option value="agri">Agriculture</option>
+                        <option value="aqua">Aquaculture</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Images</label>
+                    <div class="col-sm-6">
+                      <input type="file" name="photo" class="form-control input-custom" required>
                     </div>
                   </div>
                   
@@ -96,7 +112,7 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-3">
-                      <button type="submit" name="add_new_employee" class="btn btn-success-custom">Add Employee</button>
+                      <button type="submit" name="add_new_employee" class="btn btn-success-custom">Add Espace</button>
                     </div>
                     <div class="col-sm-3">
                       <button type="submit" class="btn btn-danger-custom" data-dismiss="modal">Cancel</button>
@@ -130,12 +146,13 @@
           <?php } ?>
             <?php if($user_role == 1){ ?>
                 <div class="btn-group">
-                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Add New Employee</button>
+                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Ajoute Parcelle/Bassin</button>
                 </div>
               <?php } ?>
           <ul class="nav nav-tabs nav-justified nav-tabs-custom">
             <li><a href="manage-admin.php">Manage Admin</a></li>
-            <li class="active"><a href="admin-manage-user.php">Manage Employee</a></li>
+            <li><a href="admin-manage-user.php">Manage Employee</a></li>
+            <li class="active"><a href="admin-manage-parcel.php">Manage Parcel</a></li>
           </ul>
           <div class="gap"></div>
           <div class="table-responsive">
@@ -143,11 +160,11 @@
               <thead>
                 <tr>
                   <th>Serial No.</th>
-                  <th>Fullname</th>
-                  <th>Email</th>
-                  <th>Username</th>
-                  <th>Temp Password</th>
-                  <th>Details</th>
+                  <th>Titre</th>
+                  <th>Description</th>
+                  <th>Dimension</th>
+                  <th>Type d'activités</th>
+                  <th>Photo</th>
                 </tr>
               </thead>
               <tbody>
@@ -190,6 +207,6 @@ if(isset($_SESSION['update_user_pass'])){
   echo '<script>alert("Password updated successfully");</script>';
   unset($_SESSION['update_user_pass']);
 }
-include("include/footer.php");
+// include("include/footer.php");
 
 ?>

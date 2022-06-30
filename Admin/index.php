@@ -53,7 +53,7 @@
 	 		            align-items-center
 	 		            flex-column">
 
-	 		<img src="../img/vitagro.png" 
+	 		<img src="img/vitagro.png" 
 	 		     class="w-25">
 	 		<h3 class="display-4 fs-1 
 	 		           text-center">

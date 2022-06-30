@@ -25,6 +25,7 @@
           <ul class="nav nav-tabs nav-justified nav-tabs-custom">
             <li class="active"><a href="manage-admin.php">Manage Admin</a></li>
             <li><a href="admin-manage-user.php">Manage Employee</a></li>
+            <li><a href="admin-manage-parcel.php">Manage Parecls</a></li>
           </ul>
           <div class="gap"></div>
           <div class="table-responsive">
@@ -73,6 +74,6 @@ if(isset($_SESSION['update_user_pass'])){
   echo '<script>alert("Password updated successfully");</script>';
   unset($_SESSION['update_user_pass']);
 }
-include("include/footer.php");
+// include("include/footer.php");
 
 ?>

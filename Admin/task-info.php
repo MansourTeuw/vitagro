@@ -10,7 +10,7 @@ if ($user_id == NULL || $security_key == NULL) {
     header('Location: index.php');
 }
 
-// check admin
+// check admin 
 $user_role = $_SESSION['user_role'];
 
 
