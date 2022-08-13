@@ -26,11 +26,9 @@ if(isset($_POST['add_task_post'])){
     $obj_admin->add_new_task($_POST);
 }
 
-$page_name="Task_Info";
+$page_name = "Task_Info";
 include("sidebar.php");
 // include('ems_header.php');
-
-// echo md5('123');
 
 
 ?>
@@ -45,7 +43,7 @@ include("sidebar.php");
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title text-center">Assign New Task</h2>
+          <h2 class="modal-title text-center">Assigner Une Tache</h2>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -65,29 +63,30 @@ include("sidebar.php");
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-5">Début</label>
+                    <label class="control-label col-sm-5">Date de Debut</label>
                     <div class="col-sm-7">
                       <input type="text" name="t_start_time" id="t_start_time" class="form-control">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-5">Fin</label>
+                    <label class="control-label col-sm-5">Date de Fin</label>
                     <div class="col-sm-7">
                       <input type="text" name="t_end_time" id="t_end_time" class="form-control">
                     </div>
                   </div>
 
+
                   <div class="form-group">
-                    <label class="control-label col-sm-5">Aftecter Parcelles</label>
+                    <label class="control-label col-sm-5">Parcelles</label>
                     <div class="col-sm-7">
                       <?php 
-                        $sql0 = "SELECT land_id, land_name FROM land";
-                        $info0 = $obj_admin->manage_all_info($sql0);   
+                        $sql = "SELECT land_id, land_name FROM land ";
+                        $info = $obj_admin->manage_all_info($sql);   
                       ?>
-                      <select class="form-control" name="parcelle"  id="parcelle" required>
-                        <option value="">Select Parcelles...</option>
+                      <select class="form-control" name="selected_land" id="selected_land" required>
+                        <option value="">Selectionner Parcelles...</option>
 
-                        <?php while($row = $info0->fetch(PDO::FETCH_ASSOC)){ ?>
+                        <?php while($row = $info->fetch(PDO::FETCH_ASSOC)){ ?>
                         <option value="<?php echo $row['land_id']; ?>"><?php echo $row['land_name']; ?></option>
                         <?php } ?>
                       </select>
@@ -98,31 +97,30 @@ include("sidebar.php");
 
 
 
+
+
                   <div class="form-group">
-                    <label class="control-label col-sm-5">Assigner à</label>
+                    <label class="control-label col-sm-5">Assignee a</label>
                     <div class="col-sm-7">
                       <?php 
                         $sql = "SELECT user_id, fullname FROM tbl_admin WHERE user_role = 2";
                         $info = $obj_admin->manage_all_info($sql);   
                       ?>
-                      <select class="form-control" name="assign_to"  id="assign_to" required>
-                        <option value="">Select Employer...</option>
+                      <select class="form-control" name="assign_to" id="aassign_to" required>
+                        <option value="">Selectioner un Employe...</option>
 
                         <?php while($row = $info->fetch(PDO::FETCH_ASSOC)){ ?>
                         <option value="<?php echo $row['user_id']; ?>"><?php echo $row['fullname']; ?></option>
                         <?php } ?>
                       </select>
                     </div>
-
-
-
                    
                   </div>
                   <div class="form-group">
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-3">
-                      <button type="submit" name="add_task_post" class="btn btn-success-custom">Assigner Tâches</button>
+                      <button type="submit" name="add_task_post" class="btn btn-success-custom">Assigner Tache</button>
                     </div>
                     <div class="col-sm-3">
                       <button type="submit" class="btn btn-danger-custom" data-dismiss="modal">Cancel</button>
@@ -151,7 +149,7 @@ include("sidebar.php");
               <div class="btn-group">
                 <?php if($user_role == 1){ ?>
                 <div class="btn-group">
-                  <button class="btn btn-warning btn-menu" data-toggle="modal" data-target="#myModal">Assigner/Tâche</button>
+                  <button class="btn btn-warning btn-menu" data-toggle="modal" data-target="#myModal">Assigner Une Tache</button>
                 </div>
               <?php } ?>
 
@@ -161,7 +159,7 @@ include("sidebar.php");
 
             
           </div>
-          <center ><h3>Gestion Des Tâches</h3></center>
+          <center ><h3>Task Management Section</h3></center>
           <div class="gap"></div>
 
           <div class="gap"></div>
@@ -171,11 +169,11 @@ include("sidebar.php");
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Titre</th>
-                  <th>Assigner à</th>
-                  <!-- <th>Parcelles</th> -->
-                  <th>Début</th>
-                  <th>Fin</th>
+                  <th>Task Title</th>
+                  <th>Assigned To</th>
+                  <th>Parcelles</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -184,47 +182,33 @@ include("sidebar.php");
 
               <?php 
                 if($user_role == 1){
-                  $sql = "SELECT a.*, b.fullname 
+                  $sql = "SELECT a.*, b.fullname, /*c.land_name*/ 
                         FROM task_info a
                         INNER JOIN tbl_admin b ON(a.t_user_id = b.user_id)
+                        /* INNER JOIN land c ON(a.t_land_id = c.land_id) */
                         ORDER BY a.task_id DESC";
-
-                  $sql1 = "SELECT a.*, b.land_name
-                          FROM task_info a
-                          INNER JOIN land b ON(a.t_land_id = b.land_id) 
-                          ORDER BY a.task_id DESC";
-                  
-
                 }else{
-                  $sql = "SELECT a.*, b.fullname 
+                  $sql = "SELECT a.*, b.fullname, /*c.land_name*/ 
                   FROM task_info a
                   INNER JOIN tbl_admin b ON(a.t_user_id = b.user_id)
+                  /* INNER JOIN land c ON(a.t_land_id = c.land_id) */
                   WHERE a.t_user_id = $user_id
                   ORDER BY a.task_id DESC";
-
-                  $sql1 = "SELECT a.*, b.land_name 
-                  FROM task_info a
-                  INNER JOIN land b ON(a.t_user_id = b.land_id)
-                  WHERE a.t_user_id = $user_id
-                  ORDER BY a.task_id DESC";
-} 
-
+                } 
                 
                   $info = $obj_admin->manage_all_info($sql);
-                  $info0 = $obj_admin->manage_all_info($sql1);
                   $serial  = 1;
                   $num_row = $info->rowCount();
-                  $num_row1 = $info0->rowCount();
                   if($num_row==0){
                     echo '<tr><td colspan="7">No Data found</td></tr>';
                   }
                       while( $row = $info->fetch(PDO::FETCH_ASSOC) ){
-                        
               ?>
                 <tr>
                   <td><?php echo $serial; $serial++; ?></td>
                   <td><?php echo $row['t_title']; ?></td>
                   <td><?php echo $row['fullname']; ?></td>
+                  <td><?php echo $row['land_name']; ?></td>
                   <td><?php echo $row['t_start_time']; ?></td>
                   <td><?php echo $row['t_end_time']; ?></td>
                   <td>
@@ -252,7 +236,7 @@ include("sidebar.php");
         </div>
       </div>
     </div>
-
+ 
 
 <?php
 

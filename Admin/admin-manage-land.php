@@ -1,41 +1,43 @@
 <?php
-    require 'authentication.php' ;
+  //  require 'admin_class.php' ;
+
+   require 'authentication.php' ;
 
     // Verifier l'authentification  
 
-    $user_id = $_SESSION['admin_id'];
+    $land_id = $_SESSION['admin_id'];
 
-    $user_name = $_SESSION['name'];
+    $land_name = $_SESSION['name'];
     $security_key = $_SESSION['security_key'];
 
-    if ($user_id == NULL || $security_key == NULL) {
+    if ($land_id == NULL || $security_key == NULL) {
         header("Location: index.php");
     }
 
-    // Verifier s'il s'agit de l'admin
+    // Verifier s'il s'agit de l'admin  
 
     $user_role = $_SESSION['user_role'];
     if ($user_role != 1) {
         header("Location: task-info.php"); 
     }
 
-    if (isset($_GET['delete_user'])) {
+    if (isset($_GET['delete_land'])) {
         $action_id = $_GET['admin_id'];
 
-        $task_sql = "DELETE FROM task_info WHERE t_user_id = $action_id";
+        $task_sql = "DELETE FROM task_info WHERE t_land_id = $action_id";
 
         $delete_task = $obj_admin->db->prepare($task_sql);
 
         $delete_task->execute();
 
-        $attendance_sql = "DELETE FROM attendance_info WHERE atn_user_id = $action_id";
+        $attendance_sql = "DELETE FROM attendance_info WHERE atn_land_id = $action_id";
 
         $delete_attendance = $obj_admin->db->prepare($attendance_sql);
         $delete_attendance->execute();
 
-        $sql = "DELETE FROM tbl_admin WHERE user_id = :id";
+        $sql = "DELETE FROM land WHERE land_id = :id";
 
-        $sent_po = "admin-manage-user.php";
+        $sent_po = "admin-manage-land.php";
         $obj_admin->delete_data_by_this_method($sql, $action_id, $sent_po);
 
 
@@ -44,8 +46,8 @@
     $page_name = "Admin";
     include("sidebar.php");
 
-    if (isset($_POST['add_new_employee'])) {
-        $error = $bj_admin->add_new_user($_POST);
+    if (isset($_POST['add_land'])) {
+        $error = $obj_admin->add_new_land($_POST);
     }
 
 ?>
@@ -60,7 +62,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title text-center">Add Employee Info</h2>
+          <h2 class="modal-title text-center">Info Land</h2>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -68,8 +70,8 @@
               <?php if(isset($error)){ ?>
                 <h5 class="alert alert-danger"><?php echo $error; ?></h5>
                 <?php } ?>
-              <form role="form" action="" method="post" autocomplete="off">
-                <div class="form-horizontal">
+              <form role="form" action="" method="post" autocomplete="off" enctype="multipart/form-data">
+                <div class="form-horizontal" >
 
                   <div class="form-group">
                     <label class="control-label col-sm-4">Titre</label>
@@ -102,7 +104,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-4">Images</label>
                     <div class="col-sm-6">
-                      <input type="file" name="photo" class="form-control input-custom" required>
+                      <input type="file" name="image" class="form-control input-custom" required>
                     </div>
                   </div>
                   
@@ -112,7 +114,7 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-3">
-                      <button type="submit" name="add_new_employee" class="btn btn-success-custom">Add Espace</button>
+                      <button type="submit" name="add_land" class="btn btn-success-custom" value="Upload">Add Espace</button>
                     </div>
                     <div class="col-sm-3">
                       <button type="submit" class="btn btn-danger-custom" data-dismiss="modal">Cancel</button>
@@ -146,13 +148,13 @@
           <?php } ?>
             <?php if($user_role == 1){ ?>
                 <div class="btn-group">
-                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Ajoute Parcelle/Bassin</button>
+                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Ajouter Parcelles / Bassins</button>
                 </div>
               <?php } ?>
           <ul class="nav nav-tabs nav-justified nav-tabs-custom">
-            <li><a href="manage-admin.php">Manage Admin</a></li>
-            <li><a href="admin-manage-user.php">Manage Employee</a></li>
-            <li class="active"><a href="admin-manage-parcel.php">Manage Parcel</a></li>
+            <li><a href="manage-admin.php">Gestion Admin</a></li>
+            <li><a href="admin-manage-user.php">Gestion Employers</a></li>
+            <li class="active"><a href="admin-manage-land.php">Gestion Espace</a></li>
           </ul>
           <div class="gap"></div>
           <div class="table-responsive">
@@ -161,16 +163,16 @@
                 <tr>
                   <th>Serial No.</th>
                   <th>Titre</th>
-                  <th>Description</th>
+                  <!-- <th>Description</th> -->
                   <th>Dimension</th>
                   <th>Type d'activités</th>
-                  <th>Photo</th>
+                  <th>Image</th>
                 </tr>
               </thead>
               <tbody>
 
               <?php 
-                $sql = "SELECT * FROM tbl_admin WHERE user_role = 2 ORDER BY user_id DESC";
+                $sql = "SELECT * FROM land";
                 $info = $obj_admin->manage_all_info($sql);
                 $serial  = 1;
                 $num_row = $info->rowCount();
@@ -181,12 +183,15 @@
               ?>
                 <tr>
                   <td><?php echo $serial; $serial++; ?></td>
-                  <td><?php echo $row['fullname']; ?></td>
-                  <td><?php echo $row['email']; ?></td>
-                  <td><?php echo $row['username']; ?></td>
-                  <td><?php echo $row['temp_password']; ?></td>
+                  <td><?php echo $row['land_name']; ?></td>
+                  <td><?php echo $row['land_dimension']; ?></td>
+                  <td><?php echo $row['activities']; ?></td>
+                  <td><img src="uploads/<?php echo $row['image'];?>" style="width:90px; height: 90px; margin-right: 10px;"/></td>
+
                   
-                  <td><a title="Update Employee" href="update-employee.php?admin_id=<?php echo $row['user_id']; ?>"><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;<a title="Delete" href="?delete_user=delete_user&admin_id=<?php echo $row['user_id']; ?>" onclick=" return check_delete();"><span class="glyphicon glyphicon-trash"></span></a></td>
+                  <td><a title="Update Land" href="update-land.php?admin_id=<?php echo $row['land_id']; ?>"><span class="glyphicon glyphicon-edit"></span></a>&nbsp;&nbsp;
+                  <a title="View" href="land-details.php?land_id=<?php echo $row['land_id']; ?>"><span class="glyphicon glyphicon-folder-open"></span></a>&nbsp;&nbsp;
+                  <a title="Delete" href="?delete_land=delete_land&admin_id=<?php echo $row['land_id']; ?>" onclick=" return check_delete();"><span class="glyphicon glyphicon-trash"></span></a></td>
                 </tr>
                 
               <?php  } ?>
@@ -200,13 +205,38 @@
       </div>
     </div>
 
+    <!-- <script type="text/javascript">
+
+	function validate()
+        {
+            var extensions = new Array("jpg","jpeg", "png");
+            var image_file = document.regform.image.value;
+            var image_length = document.regform.image.value.length;
+            var pos = image_file.lastIndexOf('.') + 1;
+            var ext = image_file.substring(pos, image_length);
+            var final_ext = ext.toLowerCase();
+            for (i = 0; i < extensions.length; i++)
+            {
+                if(extensions[i] == final_ext)
+                {
+                return true;
+                
+                }
+            }
+            alert("Image Extension Not Valid (Use Jpg,jpeg)");
+            return false;
+        }
+        
+</script> -->
+
 
 <?php
-if(isset($_SESSION['update_user_pass'])){
+// if(isset($_SESSION['update_user_pass'])){
 
-  echo '<script>alert("Password updated successfully");</script>';
-  unset($_SESSION['update_user_pass']);
-}
+//   echo '<script>alert("Password updated successfully");</script>';
+//   unset($_SESSION['update_user_pass']);
+// }
 // include("include/footer.php");
 
 ?>
+

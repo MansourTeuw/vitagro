@@ -1,4 +1,5 @@
 <?php
+    // include 'admin_class.php';
     require 'authentication.php' ;
 
     // Verifier l'authentification  
@@ -45,7 +46,7 @@
     include("sidebar.php");
 
     if (isset($_POST['add_new_employee'])) {
-        $error = $bj_admin->add_new_user($_POST);
+        $error = $obj_admin->add_new_user($_POST);
     }
 
 ?>
@@ -68,17 +69,17 @@
               <?php if(isset($error)){ ?>
                 <h5 class="alert alert-danger"><?php echo $error; ?></h5>
                 <?php } ?>
-              <form role="form" action="" method="post" autocomplete="off">
+              <form role="form" action="" method="post" autocomplete="off" enctype="multipart/form-data">
                 <div class="form-horizontal">
 
                   <div class="form-group">
-                    <label class="control-label col-sm-4">Fullname</label>
+                    <label class="control-label col-sm-4">Nom Complet</label>
                     <div class="col-sm-6">
                       <input type="text" placeholder="Enter Employee Name" name="em_fullname" list="expense" class="form-control input-custom" id="default" required>
                     </div>
                   </div>
                    <div class="form-group">
-                    <label class="control-label col-sm-4">Username</label>
+                    <label class="control-label col-sm-4">Nom d'utilisateur</label>
                     <div class="col-sm-6">
                       <input type="text" placeholder="Enter Employee username" name="em_username" class="form-control input-custom" required>
                     </div>
@@ -89,6 +90,13 @@
                       <input type="email" placeholder="Enter Employee Email" name="em_email" class="form-control input-custom" required>
                     </div>
                   </div>
+
+                  <div class="form-group">
+                    <label class="control-label col-sm-4">Avatar</label>
+                    <div class="col-sm-6">
+                      <input type="file" name="user_image" class="form-control input-custom" required>
+                    </div>
+                  </div>
                   
                  
                   
@@ -96,7 +104,7 @@
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-3">
-                      <button type="submit" name="add_new_employee" class="btn btn-success-custom">Add Employee</button>
+                      <button type="submit" name="add_new_employee" class="btn btn-success-custom">Ajouter Employer</button>
                     </div>
                     <div class="col-sm-3">
                       <button type="submit" class="btn btn-danger-custom" data-dismiss="modal">Cancel</button>
@@ -130,12 +138,12 @@
           <?php } ?>
             <?php if($user_role == 1){ ?>
                 <div class="btn-group">
-                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Add New Employee</button>
+                  <button class="btn btn-success btn-menu" data-toggle="modal" data-target="#myModal">Ajouter / Employers</button>
                 </div>
               <?php } ?>
           <ul class="nav nav-tabs nav-justified nav-tabs-custom">
-            <li><a href="manage-admin.php">Manage Admin</a></li>
-            <li class="active"><a href="admin-manage-user.php">Manage Employee</a></li>
+            <li><a href="manage-admin.php">Gestion Admin</a></li>
+            <li class="active"><a href="admin-manage-user.php">Gestion Employers</a></li>
           </ul>
           <div class="gap"></div>
           <div class="table-responsive">
@@ -143,11 +151,12 @@
               <thead>
                 <tr>
                   <th>Serial No.</th>
-                  <th>Fullname</th>
+                  <th>Avatar</th>
+                  <th>Nom Complet</th>
                   <th>Email</th>
-                  <th>Username</th>
-                  <th>Temp Password</th>
-                  <th>Details</th>
+                  <th>Nom d'utilisateur</th>
+                  <th>Mot de passe temp</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -164,6 +173,7 @@
               ?>
                 <tr>
                   <td><?php echo $serial; $serial++; ?></td>
+                  <td><img src="uploads/<?php echo $row['user_image'];?>" style="width:60px; height: 60px;"/></td>
                   <td><?php echo $row['fullname']; ?></td>
                   <td><?php echo $row['email']; ?></td>
                   <td><?php echo $row['username']; ?></td>
@@ -190,6 +200,6 @@ if(isset($_SESSION['update_user_pass'])){
   echo '<script>alert("Password updated successfully");</script>';
   unset($_SESSION['update_user_pass']);
 }
-include("include/footer.php");
+include("includes/footer.php");
 
 ?>

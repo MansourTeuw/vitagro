@@ -1,5 +1,4 @@
 <?php
-
 // Englober tout le code par une class 
 
 class Admin_class {
@@ -12,9 +11,12 @@ class Admin_class {
         $password = '';
         $db_name = "vitagro";
 
+      
+
         try {
             $connection = new PDO("mysql:host={$host_name}; dbname={$db_name}", $user_name, $password);
             $this->db = $connection;
+            // echo "Connected!!!";
         } catch (PDOException $message) {
             echo $message -> getMessage();
         }
@@ -33,8 +35,8 @@ class Admin_class {
     // Verifier le login de l'admin et les autres 
 
     public function admin_login_check($data) {
-        $upass = $this->test_form_input_data(md5($data['admin_password']));
-        // $upass = $this->test_form_input_data($data['admin_password']);
+        // $upass = $this->test_form_input_data(md5($data['admin_password']));
+        $upass = $this->test_form_input_data($data['admin_password']);
 
 
         $username = $this->test_form_input_data($data['username']);
@@ -67,6 +69,7 @@ class Admin_class {
                 }
             } else {
                 $message = "Identifiant ou Mot de Passe Invalide!";
+                return $message;
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -76,8 +79,8 @@ class Admin_class {
     // Changer le mot de passe des employes 
 
     public function change_password_for_employee($data) {
-        $password = $this->test_form_input_data(md5($data['password']));
-        $re_password = $this->test_form_input_data(md5($data['re_password']));
+        $password = $this->test_form_input_data($data['password']);
+        $re_password = $this->test_form_input_data($data['re_password']);
 
         $user_id = $this->test_form_input_data($data['user_id']);
         $final_password = $password;
@@ -133,131 +136,89 @@ class Admin_class {
         unset($_SESSION['security_key']);
         unset($_SESSION['user_role']);
 
-        header("Location: login.php");
+        header("Location: index.php");
     }
 
-    // Création des utilisateurs 
+    // Création des utilisateurs  
 
     public function add_new_user($data) {
+        $user_fullname = $this->test_form_input_data($data['em_fullname']);
+        $user_username = $this->test_form_input_data($data['em_username']);
+        $user_email = $this->test_form_input_data($data['em_email']);
+        $temp_password = rand(000000001,10000000);
+        $user_password = $this->test_form_input_data(md5($temp_password));
 
-        if (isset($_POST['add_new_employee'])) {
+        $user_role = 2;
 
-            $files = $_FILES['user_image']['name'];
-            $file_location = $_FILES['user_image']['tmp_name'];
+        try {
+            // Pour voir si l'email ou le username est disponible 
 
-            $destination = "uploads/";
-            $file_new_name = strtolower($files);
-            $file_final = str_replace(' ', '-', $file_new_name);
+            $sqlEmail = "SELECT email FROM tbl_admin WHERE email = '$user_email' ";
+            $query_result_for_email = $this->manage_all_info($sqlEmail);
+            $total_email = $query_result_for_email->rowCount();
 
+            $sqlUsername = "SELECT username FROM tbl_admin WHERE username = '$user_username' ";
+            $query_result_for_username = $this->manage_all_info($sqlUsername);
+            $total_username = $query_result_for_username->rowCount();
 
-            $user_fullname = $this->test_form_input_data($data['em_fullname']);
-            $user_username = $this->test_form_input_data($data['em_username']);
-            $user_email = $this->test_form_input_data($data['em_email']);
-            $temp_password = rand(000000001,10000000);
-            $user_password = $this->test_form_input_data(md5($temp_password));
-    
-            $user_role = 2;
+            if ($total_email != 0 && $total_username != 0) {
+                $message = "Adresse mail et mot de passe pas disponible";
+                return $message;
+            } elseif ($total_username != 0) {
+                $message = "Nom d'utilisateur est déja pris!";
+                return $message;
+            } elseif ($total_email != 0) {
+                $message = "Adresse mail est déja prise!";
+                return $message;
+            } else {
+                $added_user = "INSERT INTO tbl_admin (fullname, username, email, password, temp_password, user_role) VALUES (:x, :y, :z, :a, :b, :c) ";
+                $add_user = $this->db->prepare($added_user);
 
-            if (move_uploaded_file($file_location, $destination.$file_final)) {
-                $user_image = $file_final;
+                $add_user->bindparam(':x', $user_fullname);
+                $add_user->bindparam(':y', $user_username);
+                $add_user->bindparam(':z', $user_email);
+                $add_user->bindparam(':a', $user_password);
+                $add_user->bindparam(':b', $temp_password);
+                $add_user->bindparam(':c', $user_role);
+
+                $add_user->execute();
+
             }
 
 
-            try {
-                // Pour voir si l'email ou le username est disponible 
-    
-                $sqlEmail = "SELECT email FROM tbl_admin WHERE email = '$user_email' ";
-                $query_result_for_email = $this->manage_all_info($sqlEmail);
-                $total_email = $query_result_for_email->rowCount();
-    
-                $sqlUsername = "SELECT username FROM tbl_admin WHERE username = '$user_username' ";
-                $query_result_for_username = $this->manage_all_info($sqlUsername);
-                $total_username = $query_result_for_username->rowCount();
-    
-                if ($total_email != 0 && $total_username != 0) {
-                    $message = "Adresse mail et mot de passe pas disponiblr";
-                    return $message;
-                } elseif ($total_username != 0) {
-                    $message = "Nom d'utilisateur est déja pris!";
-                    return $message;
-                } elseif ($total_email != 0) {
-                    $message = "Adresse mail est déja prise!";
-                    return $message;
-                } else {
-                    $added_user = "INSERT INTO tbl_admin (fullname, username, email, password, temp_password, user_role, user_image) VALUES (:x, :y, :z, :a, :b, :c, :d) ";
-                    $add_user = $this->db->prepare($added_user);
-    
-                    $add_user->bindparam(':x', $user_fullname);
-                    $add_user->bindparam(':y', $user_username);
-                    $add_user->bindparam(':z', $user_email);
-                    $add_user->bindparam(':a', $user_password);
-                    $add_user->bindparam(':b', $temp_password);
-                    $add_user->bindparam(':c', $user_role);
-                    $add_user->bindparam(':d', $user_image);
-
-    
-                    $add_user->execute();
-    
-                }
-    
-    
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
-
-
-
     }
 
     // Mise a jour des donnees utilisateurs: employees 
 
     public function update_user_data($data, $id) {
+        $user_fullname = $this->test_form_input_data($data['em_fullname']);
+        $user_username = $this->test_form_input_data($data['em_username']);
+        $user_email = $this->test_form_input_data($data['em_email']);
 
-        if (isset($_POST['update_current_employee'])) {
+        try {
 
-            $files = $_FILES['user_image_update']['name'];
-            $file_location = $_FILES['user_image_update']['tmp_name'];
+            $updated_user = "UPDATE tbl_admin SET fullname = :x, username = :y, email = :z WHERE user_id = :id";
 
-            $destination = "uploads/";
-            $file_new_name = strtolower($files);
-            $file_final = str_replace(' ', '-', $file_new_name);
+            $update_user = $this->db->prepare($updated_user);
 
-            $user_fullname = $this->test_form_input_data($data['em_fullname']);
-            $user_username = $this->test_form_input_data($data['em_username']);
-            $user_email = $this->test_form_input_data($data['em_email']);
+            $update_user->bindparam(':x', $user_fullname);
+            $update_user->bindparam(':y', $user_username);
+            $update_user->bindparam(':z', $user_email);
+            $update_user->bindparam(':id', $id);
 
-            if (move_uploaded_file($file_location, $destination.$file_final)) {
-                $user_image = $file_final;
-            }
+            $update_user->execute();
 
-            try {
+            $_SESSION['update_user'] = 'update_user';
 
-                $updated_user = "UPDATE tbl_admin SET fullname = :x, username = :y, email = :z, user_image = :a WHERE user_id = :id";
-    
-                $update_user = $this->db->prepare($updated_user);
-    
-                $update_user->bindparam(':x', $user_fullname);
-                $update_user->bindparam(':y', $user_username);
-                $update_user->bindparam(':z', $user_email);
-                $update_user->bindparam(':a', $user_image);
-                $update_user->bindparam(':id', $id);
-    
-                $update_user->execute();
-    
-                $_SESSION['update_user'] = 'update_user';
-    
-                header("Location: admin-manage-user.php");
-    
-    
-            } catch (PDOException $e) {
-                echo $e -> getMessage();
-            }
+            header("Location: admin-manage-user.php");
+
+
+        } catch (PDOException $e) {
+            echo $e -> getMessage();
         }
-
-
-
-        
 
     }
 
@@ -290,7 +251,9 @@ class Admin_class {
     // Mise a jour donnees employes 
 
     public function update_user_password($data, $id) {
-        $employee_password = $this->test_form_input_data(md5($data['employee_password']));
+        // $employee_password = $this->test_form_input_data(md5($data['employee_password']));
+        $employee_password = $this->test_form_input_data($data['employee_password']);
+
 
         try {
 
@@ -352,39 +315,37 @@ class Admin_class {
        }
     }
 
+    // creation des Parcelles 
+    public function add_new_land($data) {
 
-     // creation des Parcelles 
-     public function add_new_land($data) {
+        // if (isset($_POST['add_land '])) {
 
-        if (isset($_POST['add_land'])) {
+            // if (isset($_POST['land_name']) && isset($_POST['land_description']) && isset($_POST['land_dimension']) && isset($_POST['activities']) && isset($_POST['land_image'])) {
 
-        //     if (isset($_POST['land_name']) && isset($_POST['land_description']) && isset($_POST['land_dimension']) && isset($_POST['activities']) && isset($_POST['image'])) {
-
-                
+                $file_img = $_FILES['image']['name'];
+                $file_locate = $_FILES['image']['tmp_name'];
 
                 // $file = $this->test_form_input_data($data[$_FILES['image']['name']]);
-                $file = $_FILES['image']['name'];
+                $file = $this->test_form_input_data($data[$file_img]);
+
                 // $file_loc = $this->test_form_input_data($data[$_FILES['image']['tmp_name']]);
-                $file_loc = $_FILES['image']['tmp_name'];
+                $file_loc = $this->test_form_input_data($data[$file_locate]);
+
 
                 $folder = "uploads/";
                 $new_file_name = strtolower($file);
                 $final_file = str_replace(' ', '-', $new_file_name);
 
 
-
-                
+                if (move_uploaded_file($file_loc, $folder.$final_file)) {
+                    $land_image = $final_file;
+                }
 
                 $land_name = $this->test_form_input_data($data['land_name']);
                 $land_description = $this->test_form_input_data($data['land_description']);
                 $land_dimension = $this->test_form_input_data($data['land_dimension']);
                 $activities = $this->test_form_input_data($data['activities']);
-                // $image = $this->test_form_input_data($data['image']);
-
-                if (move_uploaded_file($file_loc,$folder.$final_file)) {
-                    $image = $final_file;
-                }
-
+                // $land_image = $this->test_form_input_data($data['image']);
 
 
                 try {
@@ -401,14 +362,14 @@ class Admin_class {
                     } else {
             
             
-                        $added_land = "INSERT INTO land (land_name, land_description, land_dimension, activities, image) VALUES (:x, :y, :z, :a, :b) ";
+                        $added_land = "INSERT INTO land (land_name, land_description, land_dimension, activities, land_image) VALUES (:x, :y, :z, :a, :b) ";
                         $add_land = $this->db->prepare($added_land);
             
                         $add_land->bindparam(':x', $land_name);
                         $add_land->bindparam(':y', $land_description);
                         $add_land->bindparam(':z', $land_dimension);
                         $add_land->bindparam(':a', $activities);
-                        $add_land->bindparam(':b', $image);
+                        $add_land->bindparam(':b', $land_image);
             
             
                         $add_land->execute();
@@ -420,11 +381,8 @@ class Admin_class {
                     echo $e->getMessage();
                 }
 
-    //         }
-    } else {
-        $message = "Probleme ave isset";
-        return $message;
-    }
+            // }
+    // }
         
 
 
@@ -451,13 +409,13 @@ class Admin_class {
         $land_description = $this->test_form_input_data($data['land_description']);
         $land_dimension = $this->test_form_input_data($data['land_dimension']);
         $activities = $this->test_form_input_data($data['activities']);
-        // $image = $this->test_form_input_data($data['image']);
+        // $land_image = $this->test_form_input_data($data['land_image']);
 
 
 
         try {
 
-            $updated_land = "UPDATE land SET land_name = :x, land_description = :y, land_dimension = :z, activities = :a, image = :b WHERE land_id = :id";
+            $updated_land = "UPDATE land SET land_name = :x, land_description = :y, land_dimension = :z, activities = :a, land_image = :b WHERE land_id = :id";
 
             $update_land = $this->db->prepare($updated_land);
 
@@ -465,7 +423,7 @@ class Admin_class {
             $update_land->bindparam(':y', $land_description);
             $update_land->bindparam(':z', $land_dimension);
             $update_land->bindparam(':a', $activities);
-            // $update_land->bindparam(':b', $image);
+            // $update_land->bindparam(':b', $land_image);
             $update_land->bindparam(':id', $id);
 
             $update_land->execute();
@@ -484,11 +442,6 @@ class Admin_class {
 
 
     // creation des Parcelles  
-
-
-
-
-
 
 
     // Gestion des taches 
@@ -549,7 +502,7 @@ class Admin_class {
 
     public function add_punch_out($data) {
         $date = new DateTime('now', new DateTimeZone('Africa/Dakar'));
-        $punch_out_time = $date->format('d-m-y H:i:s');
+        $punch_out_time = $date->format('d-m-Y H:i:s');
 
         $punch_in_time = $this->test_form_input_data($data['punch_in_time']);
 
@@ -620,26 +573,27 @@ class Admin_class {
 
 ?>
 
+
 <script type="text/javascript">
 
-	function validate()
+function validate()
+    {
+        var extensions = new Array("jpg","jpeg", "png");
+        var image_file = document.regform.image.value;
+        var image_length = document.regform.image.value.length;
+        var pos = image_file.lastIndexOf('.') + 1;
+        var ext = image_file.substring(pos, image_length);
+        var final_ext = ext.toLowerCase();
+        for (i = 0; i < extensions.length; i++)
         {
-            var extensions = new Array("jpg","jpeg", "png");
-            var image_file = document.regform.image.value;
-            var image_length = document.regform.image.value.length;
-            var pos = image_file.lastIndexOf('.') + 1;
-            var ext = image_file.substring(pos, image_length);
-            var final_ext = ext.toLowerCase();
-            for (i = 0; i < extensions.length; i++)
+            if(extensions[i] == final_ext)
             {
-                if(extensions[i] == final_ext)
-                {
-                return true;
-                
-                }
+            return true;
+            
             }
-            alert("Image Extension Not Valid (Use Jpg,jpeg)");
-            return false;
         }
-        
+        alert("Image Extension Not Valid (Use Jpg,jpeg)");
+        return false;
+    }
+    
 </script>

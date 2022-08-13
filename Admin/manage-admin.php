@@ -5,7 +5,7 @@
     $user_name = $_SESSION['name'];
     $security_key = $_SESSION['security_key'];
 
-    if ($user_id == NULL || $security_key == NULL) {
+    if ($user_id == NULL || $security_key == NULL) { 
         header("Location: index.php");
     }
 
@@ -15,17 +15,19 @@
     }
 
     $page_name = "Admin";
-    include("sidebar.php");
+    include("sidebar.php"); 
 
 ?>
+
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
 
 <div class="row">
       <div class="col-md-12">
         <div class="well well-custom">
           <ul class="nav nav-tabs nav-justified nav-tabs-custom">
-            <li class="active"><a href="manage-admin.php">Manage Admin</a></li>
-            <li><a href="admin-manage-user.php">Manage Employee</a></li>
-            <li><a href="admin-manage-parcel.php">Manage Parecls</a></li>
+            <li class="active"><a href="manage-admin.php">Gestion Admin</a></li>
+            <li><a href="admin-manage-user.php">Gestion Employers</a></li>
+            <li><a href="admin-manage-land.php">Gestion Espaces</a></li>
           </ul>
           <div class="gap"></div>
           <div class="table-responsive">
@@ -33,9 +35,9 @@
               <thead>
                 <tr>
                   <th>Serial No.</th>
-                  <th>Name</th>
+                  <th>Nom</th>
                   <th>Email</th>
-                  <th>Username</th>
+                  <th>Nom d'utilisateur</th>
                   <th>Details</th>
                 </tr>
               </thead>
