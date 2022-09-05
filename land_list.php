@@ -20,25 +20,25 @@
 				<tbody>
 					<?php
 					$i = 1;
-					$type = array('',"Parcelle","PBassin");
+					$type = array('',"Parcelle","Bassin");
 					$qry = $conn->query("SELECT * FROM land ORDER BY date_created asc");
 					while($row= $qry->fetch_assoc()):
 					?>
 					<tr>
 						<th class="text-center"><?php echo $i++ ?></th>
-						<td><b><?php echo ucwords($row['Title']) ?></b></td>
-						<td><b><?php echo $row['dimension'] ?></b></td>
+						<td><b><?php echo ucwords($row['land_title']) ?></b></td>
+						<td><b><?php echo $row['land_dimension'] ?></b></td>
 						<td><b><?php echo $type[$row['type']] ?></b></td>
 						<td class="text-center">
 							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                      Action
 		                    </button>
 		                    <div class="dropdown-menu" style="">
-		                      <a class="dropdown-item view_land" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">View</a>
+		                      <a class="dropdown-item view_land" href="javascript:void(0)" data-id="<?php echo $row['land_id'] ?>">Voir</a>
 		                      <div class="dropdown-divider"></div>
-		                      <a class="dropdown-item" href="./index.php?page=edit_user&id=<?php echo $row['id'] ?>">Edit</a>
+		                      <a class="dropdown-item" href="./index.php?page=edit_land&id=<?php echo $row['land_id'] ?>">Modifier</a>
 		                      <div class="dropdown-divider"></div>
-		                      <a class="dropdown-item delete_land" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Delete</a>
+		                      <a class="dropdown-item delete_land" href="javascript:void(0)" data-id="<?php echo $row['land_id'] ?>">Supprimer</a>
 		                    </div>
 						</td>
 					</tr>	
@@ -58,12 +58,12 @@
 	_conf("Are you sure to delete this user?","delete_land",[$(this).attr('data-id')])
 	})
 	})
-	function delete_land($id){
+	function delete_land($land_id){
 		start_load()
 		$.ajax({
 			url:'ajax.php?action=delete_land',
 			method:'POST',
-			data:{id:$id},
+			data:{id:$land_id},
 			success:function(resp){
 				if(resp==1){
 					alert_toast("Data successfully deleted",'success')

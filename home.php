@@ -122,7 +122,7 @@ if($_SESSION['login_type'] != 1)
                         <a class="btn btn-primary btn-sm" href="./index.php?page=view_project&id=<?php echo $row['id'] ?>">
                               <i class="fas fa-folder">
                               </i>
-                              View
+                              Voir
                         </a>
                       </td>
                   </tr>

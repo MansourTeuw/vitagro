@@ -3,16 +3,16 @@
 <div class="col-lg-12">
 	<div class="card">
 		<div class="card-body">
-			<form action="" id="manage_user">
-				<input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
+			<form action="" land_id="manage_user">
+				<input type="hidden" name="land_id" value="<?php echo isset($land_id) ? $land_id : '' ?>">
 				<div class="row">
 					<div class="col-md-6 border-right">
 						<div class="form-group">
 							<label for="" class="control-label">Titre</label>
 							<input type="text" name="land_title" class="form-control form-control-sm" required value="<?php echo isset($title) ? $title : '' ?>">
-                            <small id="title_match" data-status=''></small>
 
-						</div> 
+						</div>
+						
 				
                         <div class="form-group">
 							<label for="" class="control-label">Dimension</label>
@@ -27,14 +27,14 @@
 							</select>
 						</div>
 
-                        <div class="col-md-10"> 
+                        <!-- <div class="col-md-10">  -->
 				            <div class="form-group">
                                 <label for="" class="control-label">Description</label>
                                 <textarea name="land_description" id="" cols="30" rows="10" class="summernote form-control">
                                     <?php echo isset($description) ? $description : '' ?>
                                 </textarea>
 				            </div>
-			            </div>
+			            <!-- </div> -->
 
 
 						<?php else: ?>
@@ -48,15 +48,30 @@
 		                    </div>
 						</div>
 						<div class="form-group d-flex justify-content-center align-items-center">
-							<img src="<?php echo isset($land_img) ? 'assets/uploads/'.$land_img :'' ?>" alt="Avatar" id="cimg" class="img-fluid img-thumbnail ">
+							<img src="<?php echo isset($land_img) ? 'assets/uploads/'.$land_img :'' ?>" alt="Avatar" id="cimg" class="img-fluland_id img-thumbnail ">
 						</div>
 					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">Code</label>
+							<input type="password" class="form-control form-control-sm" name="code" <?php echo !isset($land_id) ? "required":'' ?>>
+							<small><i><?php echo isset($land_id) ? "Laissez le champ vland_ide si vous ne voulez pas changer le code":'' ?></i></small>
+						</div>
+						<div class="form-group">
+							<label class="label control-label">Confirmer Code</label>
+							<input type="password" class="form-control form-control-sm" name="code_rep" <?php echo !isset($land_id) ? 'required' : '' ?>>
+							<small id="code_match" data-status=''></small>
+						</div>
+					</div>
+
+
 				
 				</div>
 				<hr>
 				<div class="col-lg-12 text-right justify-content-center d-flex">
-					<button class="btn btn-primary mr-2">Save</button>
-					<button class="btn btn-secondary" type="button" onclick="location.href = 'index.php?page=user_list'">Cancel</button>
+					<button class="btn btn-primary mr-2">Soumettre</button>
+					<button class="btn btn-secondary" type="button" onclick="location.href = 'index.php?page=land_list'">Cancel</button>
 				</div>
 			</form>
 		</div>
@@ -67,19 +82,21 @@
 		height: 15vh;
 		width: 15vh;
 		object-fit: cover;
-		border-radius: 100% 100%;
+		border-radius: 100% 100%; 
 	}
 </style>
 <script>
-	$('[name="land_title"]').keyup(function(){
-		var landTitle = $('[name="land_title"]').val()
-		if(landTitle == ''){
-			$('#title_match').attr('data-status','')
+	$('[name="code"], [name="code_rep"]').keyup(function(){
+		var code = $('[name="code"]').val()
+		var codeRep = $('[name="code_rep"]').val()
+
+		if(codeRep == '' || code == ''){
+			$('#code_match').attr('data-status','')
 		}else{
-			if(cpass > 0){
-				$('#title_match').attr('data-status','1').html('<i class="text-success">title Disponible.</i>')
+			if(codeRep == code){
+				$('#code_match').attr('data-status','1').html('<i class="text-success">Les deux code ne corresponde pas!.</i>')
 			}else{
-				$('#title_match').attr('data-status','2').html('<i class="text-danger">title Non Disponible.</i>')
+				$('#code_match').attr('data-status','2').html('<i class="text-danger">OK! les deux code sont land_identiques.</i>')
 			}
 		}
 	})
@@ -98,10 +115,10 @@
 		$('input').removeClass("border-danger")
 		start_load()
 		$('#msg').html('')
-		if($('[name="land_title"]').val() != ''){
-			if($('#title_match').attr('data-status') != 1){
-				if($("[name='land_title']").val() !=''){
-					$('[name="land_title"]').addClass("border-danger")
+		if($('[name="code"]').val() != '' && $('[name="code_rep"]').val() != ''){
+			if($('#code_match').attr('data-status') != 1){
+				if($("[name='code']").val() !=''){
+					$('[name="code"], [name="code_rep"]').addClass("border-danger")
 					end_load()
 					return false;
 				}
@@ -122,8 +139,8 @@
 						location.replace('index.php?page=land_list')
 					},750)
 				}else if(resp == 2){
-					$('#msg').html("<div class='alert alert-danger'>Email already exist.</div>");
-					$('[name="email"]').addClass("border-danger")
+					$('#msg').html("<div class='alert alert-danger'>Parcelle/Bassin existe déja.</div>");
+					$('[name="land_title"]').addClass("border-danger")
 					end_load()
 				}
 			}

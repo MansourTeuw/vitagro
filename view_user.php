@@ -24,7 +24,7 @@ foreach($qry as $k => $v){
       <div class="card-footer">
         <div class="container-fluid">
         	<dl>
-        		<dt>Role</dt>
+        		<dt>Rôle</dt>
         		<dd><?php echo $type_arr[$type] ?></dd>
         	</dl>
         </div>

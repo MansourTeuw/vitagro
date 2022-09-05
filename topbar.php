@@ -8,7 +8,7 @@
       </li>
     <?php endif; ?>
       <li>
-        <a class="nav-link text-white"  href="./" role="button"> <large><b><?php echo $_SESSION['system']['name'] ?></b></large></a>
+        <a class="nav-link text-white"  href="./" role="button"> <large><b>SYSTEME DE GESTION DE TACHE</b></large></a>
       </li>
     </ul>
 
@@ -30,8 +30,8 @@
               </span>
             </a>
             <div class="dropdown-menu" aria-labelledby="account_settings" style="left: -2.5em;">
-              <a class="dropdown-item" href="javascript:void(0)" id="manage_account"><i class="fa fa-cog"></i> Manage Account</a>
-              <a class="dropdown-item" href="ajax.php?action=logout"><i class="fa fa-power-off"></i> Logout</a>
+              <a class="dropdown-item" href="javascript:void(0)" id="manage_account"><i class="fa fa-cog"></i> Gérer Votre Compte</a>
+              <a class="dropdown-item" href="ajax.php?action=logout"><i class="fa fa-power-off"></i> Déconnexion</a>
             </div>
       </li>
     </ul>

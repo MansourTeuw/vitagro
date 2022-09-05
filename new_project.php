@@ -54,6 +54,23 @@
               </select>
             </div>
           </div>
+
+		  <div class="col-md-6">
+            <div class="form-group">
+              <label for="" class="control-label">Parcelles/Bassins</label>
+              <select class="form-control form-control-sm select2" multiple="multiple" name="land_ids[]">
+              	<option></option>
+              	<?php 
+              	$land = $conn->query("SELECT * FROM land order by land_title asc ");
+              	while($row= $land->fetch_assoc()):
+              	?>
+              	<option value="<?php echo $row['id'] ?>" <?php echo isset($land_ids) && in_array($row['id'],explode(',',$land_ids)) ? "selected" : '' ?>><?php echo ucwords($row['land_title']) ?></option>
+              	<?php endwhile; ?>
+              </select>
+            </div>
+          </div>
+
+
       <?php else: ?>
       	<input type="hidden" name="manager_id" value="<?php echo $_SESSION['login_id'] ?>">
       <?php endif; ?>
@@ -71,6 +88,11 @@
               </select>
             </div>
           </div>
+
+		  
+
+
+
         </div>
 		<div class="row">
 			<div class="col-md-10"> 
@@ -86,7 +108,7 @@
     	</div>
     	<div class="card-footer border-top border-info">
     		<div class="d-flex w-100 justify-content-center align-items-center">
-    			<button class="btn btn-flat  bg-gradient-primary mx-2" form="manage-project">Save</button>
+    			<button class="btn btn-flat  bg-gradient-primary mx-2" form="manage-project">Soumettre</button>
     			<button class="btn btn-flat bg-gradient-secondary mx-2" type="button" onclick="location.href='index.php?page=project_list'">Cancel</button>
     		</div>
     	</div>
@@ -106,7 +128,7 @@
 		    type: 'POST',
 			success:function(resp){
 				if(resp == 1){
-					alert_toast('Data successfully saved',"success");
+					alert_toast('Parcelle/Bassin enrégistré avec succès!!!',"success");
 					setTimeout(function(){
 						location.href = 'index.php?page=project_list'
 					},2000)

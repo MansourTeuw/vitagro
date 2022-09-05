@@ -6,10 +6,10 @@ include('./db_connect.php');
   ob_start();
   // if(!isset($_SESSION['system'])){
 
-    $system = $conn->query("SELECT * FROM sys_settings")->fetch_array();
-    foreach($system as $k => $v){
-      $_SESSION['system'][$k] = $v;
-    }
+    // $system = $conn->query("SELECT * FROM sys_settings")->fetch_array();
+    // foreach($system as $k => $v){
+    //   $_SESSION['system'][$k] = $v;
+    // }
   // }
   ob_end_flush();
 ?>
@@ -22,7 +22,7 @@ header("location:index.php?page=home");
 <body class="hold-transition login-page bg-black">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#" class="text-white"><b><?php echo $_SESSION['system']['name'] ?> - Admin</b></a>
+    <a href="#" class="text-white"><b> - Admin</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

@@ -122,10 +122,10 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2021 <a href="https://www.campcodes.com/">CampCodes</a>.</strong>
-    All rights reserved.
+    <strong>Copyright &copy; <?= date("Y"); ?> <a href="https://www.vitagro.sn/">Vitagro</a>.</strong>
+    Tout Droit Réservé.
     <div class="float-right d-none d-sm-inline-block">
-      <b><?php echo $_SESSION['system']['name'] ?></b>
+      <b><?php echo "Système de Gestion de Tâches" ?></b>
     </div>
   </footer>
 </div>

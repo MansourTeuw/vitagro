@@ -109,6 +109,8 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./index.php?page=new_land" class="nav-link nav-new_user tree-item">
+                <!-- <a href="./index.php?page=land" class="nav-link nav-new_user tree-item"> -->
+
                   <i class="fas fa-angle-right nav-icon"></i>
                   <p>Ajouter</p>
                 </a>

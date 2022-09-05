@@ -17,10 +17,10 @@
 						</div>
 						<?php if($_SESSION['login_type'] == 1): ?>
 						<div class="form-group">
-							<label for="" class="control-label">User Role</label>
+							<label for="" class="control-label">Rôle de l'utilisateur</label>
 							<select name="type" id="type" class="custom-select custom-select-sm">
-								<option value="3" <?php echo isset($type) && $type == 3 ? 'selected' : '' ?>>Employee</option>
-								<option value="2" <?php echo isset($type) && $type == 2 ? 'selected' : '' ?>>Project Manager</option>
+								<option value="3" <?php echo isset($type) && $type == 3 ? 'selected' : '' ?>>Employé</option>
+								<option value="2" <?php echo isset($type) && $type == 2 ? 'selected' : '' ?>>Chef de Projet</option>
 								<option value="1" <?php echo isset($type) && $type == 1 ? 'selected' : '' ?>>Admin</option>
 							</select>
 						</div>
@@ -122,7 +122,7 @@
 		    type: 'POST',
 			success:function(resp){
 				if(resp == 1){
-					alert_toast('Data successfully saved.',"success");
+					alert_toast('Utilisateur enrégistré avec succès!!!.',"success");
 					setTimeout(function(){
 						location.replace('index.php?page=user_list')
 					},750)

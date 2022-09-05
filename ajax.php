@@ -20,22 +20,32 @@ if($action == 'logout'){
 	if($logout)
 		echo $logout;
 }
-if($action == 'logout2'){
-	$logout = $crud->logout2();
-	if($logout)
-		echo $logout;
-}
+// if($action == 'logout2'){
+// 	$logout = $crud->logout2();
+// 	if($logout)
+// 		echo $logout;
+// }
 
 if($action == 'signup'){
 	$save = $crud->signup();
 	if($save)
 		echo $save;
 }
+
+if($action == 'signup_land'){
+	$save = $crud->signup_land();
+	if($save)
+		echo $save;
+}
+
+
+
 if($action == 'save_user'){
 	$save = $crud->save_user();
 	if($save)
 		echo $save;
 }
+
 if($action == 'update_user'){
 	$save = $crud->update_user();
 	if($save)
@@ -46,6 +56,30 @@ if($action == 'delete_user'){
 	if($save)
 		echo $save;
 }
+
+
+if ($action == 'save_land') {
+	$save = $crud->save_land();
+	if ($save) {
+		echo $save;
+	}
+}
+
+if($action == 'update_land'){
+	$save = $crud->update_land();
+	if($save)
+		echo $save;
+}
+
+if($action == 'delete_land'){
+	$save = $crud->delete_land();
+	if($save)
+		echo $save;
+}
+
+
+
+
 if($action == 'save_project'){
 	$save = $crud->save_project();
 	if($save)
@@ -71,11 +105,13 @@ if($action == 'save_progress'){
 	if($save)
 		echo $save;
 }
+
 if($action == 'delete_progress'){
 	$save = $crud->delete_progress();
 	if($save)
 		echo $save;
 }
+
 if($action == 'get_report'){
 	$get = $crud->get_report();
 	if($get)

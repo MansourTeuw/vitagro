@@ -36,6 +36,7 @@ CREATE TABLE `proj_listt` (
   `end_date` date NOT NULL,
   `manager_id` int(30) NOT NULL,
   `user_ids` text NOT NULL,
+  `land_ids` text NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

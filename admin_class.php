@@ -184,6 +184,170 @@ Class Action {
 		if($delete)
 			return 1;
 	}
+
+
+	function save_land() {
+
+		extract($_POST);
+		$data = "";
+
+		foreach($_POST as $k => $v) {
+			if (!in_array($k, array('land_id', 'code_rep', 'code')) && !is_numeric($k)) {
+				if (empty($data)) {
+					$data .= " $k ='$v' ";
+				} else {
+					$data .= ", $k='$v' ";
+				}
+			}
+		}
+
+		if(!empty($code)){
+			$data .= ", code='$code' ";
+
+		}
+
+		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$title' ".(!empty($land_id) ? " AND land_id != {$land_id} " : ''))->num_rows;
+
+		if ($check > 0) {
+			return 2;
+			exit;
+		}
+
+		if (isset($_FILES['img']) && $_FILES['img']['tmp_name'] != '') {
+
+			$fname = strtotime(date('y-m-d H:i')) . '_'.$_FILES['img']['name'];
+
+			$move = move_uploaded_file($_FILES['img']['tmp_name'],'assets/uploads/'. $fname);
+
+			$data .= ", avatar = '$fname' ";
+		}
+
+		if (empty($land_id)) {
+			$save = $this->db->query("INSERT INTO land SET $data");
+
+		} else {
+			$save = $this->db->query("UPDATE land SET $data WHERE land_id = $land_id");
+		}
+
+		if ($save) {
+			return 1;
+		}
+
+	}
+
+	function signup_land(){
+		extract($_POST);
+		$data = "";
+		foreach($_POST as $k => $v){
+			if(!in_array($k, array('land_id','code_rep')) && !is_numeric($k)){
+				if($k =='code'){
+					if(empty($v))
+						continue;
+					$v = $v;
+
+				}
+				if(empty($data)){
+					$data .= " $k='$v' ";
+				}else{
+					$data .= ", $k='$v' ";
+				}
+			}
+		}
+
+		$check = $this->db->query("SELECT * FROM land where land_title ='$title' ".(!empty($land_id) ? " and land_id != {$land_id} " : ''))->num_rows;
+		if($check > 0){
+			return 2;
+			exit;
+		}
+		if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
+			$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['img']['name'];
+			$move = move_uploaded_file($_FILES['img']['tmp_name'],'assets/uploads/'. $fname);
+			$data .= ", avatar = '$fname' ";
+
+		}
+		if(empty($id)){
+			$save = $this->db->query("INSERT INTO land set $data");
+
+		}else{
+			$save = $this->db->query("UPDATE land set $data where land_id = $land_id");
+		}
+
+		if($save){
+			if(empty($land_id))
+				$id = $this->db->insert_id;
+			foreach ($_POST as $key => $value) {
+				if(!in_array($key, array('land_id','code_rep','code')) && !is_numeric($key))
+					$_SESSION['login_land_'.$key] = $value;
+			}
+					$_SESSION['login_land_id'] = $id;
+				if(isset($_FILES['img']) && !empty($_FILES['img']['tmp_name']))
+					$_SESSION['login_land_avatar'] = $fname;
+			return 1;
+		}
+	}
+
+
+
+
+
+	function update_land() {
+		extract($_POST);
+		$data = "";
+
+		foreach($_POST as $k => $v) {
+
+			if (!in_array($k, array('land_id', 'code_rep', 'table', 'code')) && !is_numeric($k) ) {
+
+				if (empty($data)) {
+					$data .= " $k='$v' ";
+				} else {
+					$data .= ", $k='$v' ";
+				}
+			}
+		}
+
+		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$title' ". (!empty($land_id) ? " AND land_id != {$land_id}" : ''))->num_rows;
+
+		if ($check > 0) {
+			return 2;
+			exit;
+		}
+
+		if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
+			$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['img']['name'];
+			$move = move_uploaded_file($_FILES['img']['tmp_name'],'assets/uploads/'. $fname);
+			$data .= ", avatar = '$fname' ";
+
+		}
+		if(!empty($code))
+			$data .= " ,code='$code' ";
+		if(empty($id)){
+			$save = $this->db->query("INSERT INTO land set $data");
+		}else{
+			$save = $this->db->query("UPDATE land set $data where land_id = $land_id");
+		}
+
+		if($save){
+			foreach ($_POST as $key => $value) {
+				if($key != 'code' && !is_numeric($key))
+					$_SESSION['login_land_'.$key] = $value;
+			}
+			if(isset($_FILES['img']) && !empty($_FILES['img']['tmp_name']))
+					$_SESSION['login_land_avatar'] = $fname;
+			return 1;
+		}
+
+	}
+
+	function delete_land(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM land where land_id = ".$land_id);
+		if($delete)
+			return 1;
+	}
+
+
+
 	function save_sys_settings(){
 		extract($_POST);
 		$data = '';
@@ -227,7 +391,7 @@ Class Action {
 			$move = move_uploaded_file($tmp_name,'assets/uploads/'. $fname);
 			$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
 			$hostName = $_SERVER['HTTP_HOST'];
-			$path =explode('/',$_SERVER['PHP_SELF']);
+			$path = explode('/',$_SERVER['PHP_SELF']);
 			$currentPath = '/'.$path[1]; 
 			if($move){
 				return $protocol.'://'.$hostName.$currentPath.'/assets/uploads/'.$fname;
@@ -235,29 +399,7 @@ Class Action {
 		}
 	}
 
-	function save_land() {
-
-		extract($_POST);
-		$data = "";
-
-		foreach($_POST as $k => $v) {
-			if (!in_array($k, array('id', 'title', 'desctiption')) && !is_numeric($k)) {
-				if (empty($data)) {
-					$data .= " $k ='$v' ";
-				} else {
-					$data .= ", $k='$v' ";
-				}
-			}
-		}
-
-		$check = $this->db->query("SELECT * FROM land WHERE Title = '$title' ". (!empty($id) ? "AND id != {$id}" : ''))->num_rows;
-
-		if ($check > 0) {
-			return 2;
-			exit;
-		}
-
-	}
+	
 
 
 

@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php';
-$stat = array("Pending","Started","On-Progress","On-Hold","Over Due","Done");
+$stat = array("Suspendu","Commencé","En cours...","En attente","En retard","Fini");
 $qry = $conn->query("SELECT * FROM proj_listt where id = ".$_GET['id'])->fetch_array();
 foreach($qry as $k => $v){
 	$$k = $v;
@@ -29,7 +29,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 					<div class="row">
 						<div class="col-sm-6">
 							<dl>
-								<dt><b class="border-bottom border-primary">Project Name</b></dt>
+								<dt><b class="border-bottom border-primary">Nom du Projet</b></dt>
 								<dd><?php echo ucwords($name) ?></dd>
 								<dt><b class="border-bottom border-primary">Description</b></dt>
 								<dd><?php echo html_entity_decode($description) ?></dd>
@@ -37,35 +37,35 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						</div>
 						<div class="col-md-6">
 							<dl>
-								<dt><b class="border-bottom border-primary">Start Date</b></dt>
+								<dt><b class="border-bottom border-primary">Date de Début</b></dt>
 								<dd><?php echo date("F d, Y",strtotime($start_date)) ?></dd>
 							</dl>
 							<dl>
-								<dt><b class="border-bottom border-primary">End Date</b></dt>
+								<dt><b class="border-bottom border-primary">Date de Fin</b></dt>
 								<dd><?php echo date("F d, Y",strtotime($end_date)) ?></dd>
 							</dl>
 							<dl>
 								<dt><b class="border-bottom border-primary">Status</b></dt>
 								<dd>
 									<?php
-									  if($stat[$status] =='Pending'){
+									  if($stat[$status] =='Suspendu'){
 									  	echo "<span class='badge badge-secondary'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='Started'){
+									  }elseif($stat[$status] =='Commencé'){
 									  	echo "<span class='badge badge-primary'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='On-Progress'){
+									  }elseif($stat[$status] =='En cours...'){
 									  	echo "<span class='badge badge-info'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='On-Hold'){
+									  }elseif($stat[$status] =='En attente'){
 									  	echo "<span class='badge badge-warning'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='Over Due'){
+									  }elseif($stat[$status] =='En retard'){
 									  	echo "<span class='badge badge-danger'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='Done'){
+									  }elseif($stat[$status] =='Fini'){
 									  	echo "<span class='badge badge-success'>{$stat[$status]}</span>";
 									  }
 									?>
 								</dd>
 							</dl>
 							<dl>
-								<dt><b class="border-bottom border-primary">Project Manager</b></dt>
+								<dt><b class="border-bottom border-primary">Chef de Projet</b></dt>
 								<dd>
 									<?php if(isset($manager['id'])) : ?>
 									<div class="d-flex align-items-center mt-1">
@@ -73,7 +73,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 										<b><?php echo ucwords($manager['name']) ?></b>
 									</div>
 									<?php else: ?>
-										<small><i>Manager Deleted from Database</i></small>
+										<small><i>Le Chef de Projet a été supprimé de la Base de Données!</i></small>
 									<?php endif; ?>
 								</dd>
 							</dl>
@@ -87,7 +87,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		<div class="col-md-4">
 			<div class="card card-outline card-primary">
 				<div class="card-header">
-					<span><b>Team Member/s:</b></span>
+					<span><b>Les membres de l'équipe:</b></span>
 					<div class="card-tools">
 						<!-- <button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="manage_team">Manage</button> -->
 					</div>
@@ -115,10 +115,10 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 		<div class="col-md-8">
 			<div class="card card-outline card-primary">
 				<div class="card-header">
-					<span><b>Task List:</b></span>
+					<span><b>Liste des Tâches:</b></span>
 					<?php if($_SESSION['login_type'] != 3): ?>
 					<div class="card-tools">
-						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> New Task</button>
+						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_task"><i class="fa fa-plus"></i> Ajouter une Tâche</button>
 					</div>
 				<?php endif; ?>
 				</div>
@@ -134,7 +134,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 						</colgroup>
 						<thead>
 							<th>#</th>
-							<th>Task</th>
+							<th>Tâche</th>
 							<th>Description</th>
 							<th>Status</th>
 							<th>Action</th>
@@ -156,11 +156,11 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			                        <td>
 			                        	<?php 
 			                        	if($row['status'] == 1){
-									  		echo "<span class='badge badge-secondary'>Pending</span>";
+									  		echo "<span class='badge badge-secondary'>Suspendu</span>";
 			                        	}elseif($row['status'] == 2){
-									  		echo "<span class='badge badge-primary'>On-Progress</span>";
+									  		echo "<span class='badge badge-primary'>En cours...</span>";
 			                        	}elseif($row['status'] == 3){
-									  		echo "<span class='badge badge-success'>Done</span>";
+									  		echo "<span class='badge badge-success'>Fini</span>";
 			                        	}
 			                        	?>
 			                        </td>
