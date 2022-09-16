@@ -36,14 +36,14 @@
                 }elseif($_SESSION['login_type'] == 3){
                   $where = " where concat('[',REPLACE(user_ids,',','],['),']') LIKE '%[{$_SESSION['login_id']}]%' ";
                 }
-                $qry = $conn->query("SELECT * FROM project_list $where order by name asc");
+                $qry = $conn->query("SELECT * FROM proj_listt $where order by name asc");
                 while($row= $qry->fetch_assoc()):
-                $tprog = $conn->query("SELECT * FROM task_list where project_id = {$row['id']}")->num_rows;
-                $cprog = $conn->query("SELECT * FROM task_list where project_id = {$row['id']} and status = 3")->num_rows;
+                $tprog = $conn->query("SELECT * FROM tasks_list where project_id = {$row['id']}")->num_rows;
+                $cprog = $conn->query("SELECT * FROM tasks_list where project_id = {$row['id']} and status = 3")->num_rows;
                 $prog = $tprog > 0 ? ($cprog/$tprog) * 100 : 0;
                 $prog = $prog > 0 ?  number_format($prog,2) : $prog;
-                $prod = $conn->query("SELECT * FROM user_productivity where project_id = {$row['id']}")->num_rows;
-                $dur = $conn->query("SELECT sum(time_rendered) as duration FROM user_productivity where project_id = {$row['id']}");
+                $prod = $conn->query("SELECT * FROM users_productivity where project_id = {$row['id']}")->num_rows;
+                $dur = $conn->query("SELECT sum(time_rendered) as duration FROM users_productivity where project_id = {$row['id']}");
                 $dur = $dur->num_rows > 0 ? $dur->fetch_assoc()['duration'] : 0;
                 if($row['status'] == 0 && strtotime(date('Y-m-d')) >= strtotime($row['start_date'])):
                 if($prod  > 0  || $cprog > 0)

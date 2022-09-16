@@ -34,7 +34,34 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0"><?php echo $title ?></h1>
+            <h1 class="m-0"><?php
+            
+            if ($title == 'Home') {
+              echo "Accueil";
+             } elseif ($title == 'New Project') {
+              echo "Nouveau Projet";
+             } elseif ($title == 'Project List') {
+              echo "Liste Des Projets";
+             } elseif ($title == 'Task List') {
+              echo "Liste Des Tâches";
+             } elseif ($title == 'New User') {
+              echo "Nouveau Utilisateur";
+             } elseif ($title == 'User List') {
+              echo "Liste Des Utilisateurs";
+             } elseif ($title == 'New Land') {
+              echo "Nouveau Espace";
+             } elseif ($title == 'Land List') {
+              echo "Liste Des Parcelles/Bassins";
+             } elseif ($title == 'View Project') {
+              echo "Détails Des Projets";
+             } elseif ($title == 'Edit Project') {
+              echo "Modifier Le Projets";
+             }
+              else {
+              echo "Page Inconnue";
+             }
+
+             ?></h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -83,7 +110,7 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
+        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Soumettre</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
       </div>
@@ -122,7 +149,7 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; <?= date("Y"); ?> <a href="https://www.vitagro.sn/">Vitagro</a>.</strong>
+    <strong>Copyright &copy; <?= date("Y"); ?> <a href="https://www.vitagro.sn/" style="text-decoration: none;">Vitagro</a>.</strong>
     Tout Droit Réservé.
     <div class="float-right d-none d-sm-inline-block">
       <b><?php echo "Système de Gestion de Tâches" ?></b>

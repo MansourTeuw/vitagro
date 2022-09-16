@@ -41,9 +41,9 @@ class Admin_class {
                 $final_file = str_replace(' ', '-', $new_file_name);
 
                 $land_title = $this->test_form_input_data($data['land_title']);
-                $land_description = $this->test_form_input_data($data['land_description']);
                 $land_dimension = $this->test_form_input_data($data['land_dimension']);
                 $land_type = $this->test_form_input_data($data['land_type']);
+                $land_description = $this->test_form_input_data($data['land_description']);
 
                 if (move_uploaded_file($file_loc,$folder.$final_file)) {
                     $image = $final_file;
@@ -65,13 +65,13 @@ class Admin_class {
                     } else {
             
             
-                        $added_land = "INSERT INTO land (land_title, land_dimension, land_description, type, image) VALUES (:x, :y, :z, :a, :b) ";
+                        $added_land = "INSERT INTO land (land_title, land_dimension, land_type, land_description, image) VALUES (:x, :y, :z, :a, :b) ";
                         $add_land = $this->db->prepare($added_land);
             
                         $add_land->bindparam(':x', $land_title);
-                        $add_land->bindparam(':z', $land_dimension);
-                        $add_land->bindparam(':y', $land_description);
-                        $add_land->bindparam(':a', $land_type);
+                        $add_land->bindparam(':y', $land_dimension);
+                        $add_land->bindparam(':z', $land_type);
+                        $add_land->bindparam(':a', $land_description);
                         $add_land->bindparam(':b', $image);
             
             

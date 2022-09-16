@@ -1,9 +1,10 @@
 <?php
+
 ?>
 <div class="col-lg-12">
 	<div class="card">
 		<div class="card-body">
-			<form action="" land_id="manage_user">
+			<form action="" id="manage_land">
 				<input type="hidden" name="land_id" value="<?php echo isset($land_id) ? $land_id : '' ?>">
 				<div class="row">
 					<div class="col-md-6 border-right">
@@ -96,7 +97,7 @@
 			if(codeRep == code){
 				$('#code_match').attr('data-status','1').html('<i class="text-success">Les deux code ne corresponde pas!.</i>')
 			}else{
-				$('#code_match').attr('data-status','2').html('<i class="text-danger">OK! les deux code sont land_identiques.</i>')
+				$('#code_match').attr('data-status','2').html('<i class="text-danger">OK! les deux code sont pas identiques.</i>')
 			}
 		}
 	})

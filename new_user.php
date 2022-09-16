@@ -8,11 +8,11 @@
 				<div class="row">
 					<div class="col-md-6 border-right">
 						<div class="form-group">
-							<label for="" class="control-label">First Name</label>
+							<label for="" class="control-label">Prénom</label>
 							<input type="text" name="firstname" class="form-control form-control-sm" required value="<?php echo isset($firstname) ? $firstname : '' ?>">
 						</div> 
 						<div class="form-group">
-							<label for="" class="control-label">Last Name</label>
+							<label for="" class="control-label">Nom</label>
 							<input type="text" name="lastname" class="form-control form-control-sm" required value="<?php echo isset($lastname) ? $lastname : '' ?>">
 						</div>
 						<?php if($_SESSION['login_type'] == 1): ?>
@@ -31,7 +31,7 @@
 							<label for="" class="control-label">Avatar</label>
 							<div class="custom-file">
 		                      <input type="file" class="custom-file-input" id="customFile" name="img" onchange="displayImg(this,$(this))">
-		                      <label class="custom-file-label" for="customFile">Choose file</label>
+		                      <label class="custom-file-label" for="customFile">Choisir un fichier</label>
 		                    </div>
 						</div>
 						<div class="form-group d-flex justify-content-center align-items-center">
@@ -46,12 +46,12 @@
 							<small id="#msg"></small>
 						</div>
 						<div class="form-group">
-							<label class="control-label">Password</label>
+							<label class="control-label">Mot De Passe</label>
 							<input type="password" class="form-control form-control-sm" name="password" <?php echo !isset($id) ? "required":'' ?>>
-							<small><i><?php echo isset($id) ? "Leave this blank if you dont want to change you password":'' ?></i></small>
+							<small><i><?php echo isset($id) ? "Laissez ce champ vide si vous ne voulez pas changer de mot de passe.":'' ?></i></small>
 						</div>
 						<div class="form-group">
-							<label class="label control-label">Confirm Password</label>
+							<label class="label control-label">Confirmer Mot De Passe</label>
 							<input type="password" class="form-control form-control-sm" name="cpass" <?php echo !isset($id) ? 'required' : '' ?>>
 							<small id="pass_match" data-status=''></small>
 						</div>
@@ -59,7 +59,7 @@
 				</div>
 				<hr>
 				<div class="col-lg-12 text-right justify-content-center d-flex">
-					<button class="btn btn-primary mr-2">Save</button>
+					<button class="btn btn-primary mr-2">Soumettre</button>
 					<button class="btn btn-secondary" type="button" onclick="location.href = 'index.php?page=user_list'">Cancel</button>
 				</div>
 			</form>

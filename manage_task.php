@@ -1,7 +1,7 @@
 <?php 
 include 'db_connect.php';
 if(isset($_GET['id'])){
-	$qry = $conn->query("SELECT * FROM task_list where id = ".$_GET['id'])->fetch_array();
+	$qry = $conn->query("SELECT * FROM tasks_list where id = ".$_GET['id'])->fetch_array();
 	foreach($qry as $k => $v){
 		$$k = $v;
 	}
@@ -12,7 +12,7 @@ if(isset($_GET['id'])){
 		<input type="hidden" name="id" value="<?php echo isset($id) ? $id : '' ?>">
 		<input type="hidden" name="project_id" value="<?php echo isset($_GET['pid']) ? $_GET['pid'] : '' ?>">
 		<div class="form-group">
-			<label for="">Task</label>
+			<label for="">Tâche</label>
 			<input type="text" class="form-control form-control-sm" name="task" value="<?php echo isset($task) ? $task : '' ?>" required>
 		</div>
 		<div class="form-group">
@@ -21,6 +21,22 @@ if(isset($_GET['id'])){
 				<?php echo isset($description) ? $description : '' ?>
 			</textarea>
 		</div>
+
+		<div class="form-group">
+              <label for="" class="control-label">Assigné à</label>
+              <select class="form-control form-control-sm select2" multiple="multiple" name="user_ids[]">
+              	<option></option>
+              	<?php 
+              	$employees = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM userss where type = 3 order by concat(firstname,' ',lastname) asc ");
+              	while($row= $employees->fetch_assoc()):
+              	?>
+              	<option value="<?php echo $row['id'] ?>" <?php echo isset($user_ids) && in_array($row['id'],explode(',',$user_ids)) ? "selected" : '' ?>><?php echo ucwords($row['name']) ?></option>
+              	<?php endwhile; ?>
+              </select>
+            </div>
+
+
+
 		<div class="form-group">
 			<label for="">Status</label>
 			<select name="status" id="status" class="custom-select custom-select-sm">

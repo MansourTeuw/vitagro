@@ -2,9 +2,11 @@
 <div class="col-lg-12">
 	<div class="card card-outline card-success">
 		<div class="card-header">
-			<div class="card-tools">
-				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=new_project"><i class="fa fa-plus"></i> Add New project</a>
-			</div>
+			<?php if($_SESSION['login_type'] != 3): ?>
+			<!-- <div class="card-tools">
+				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=new_project"><i class="fa fa-plus"></i> Ajouter Tâche</a>
+			</div> -->
+            <?php endif; ?>
 		</div>
 		<div class="card-body">
 			<table class="table tabe-hover table-condensed" id="list">
@@ -21,12 +23,12 @@
 				<thead>
 					<tr>
 						<th class="text-center">#</th>
-						<th>Project</th>
-						<th>Task</th>
-						<th>Project Started</th>
-						<th>Project Due Date</th>
-						<th>Project Status</th>
-						<th>Task Status</th>
+						<th>Projet</th>
+						<th>Tâche</th>
+						<th>Projet Démarré</th>
+						<th>Projet Dépassé</th>
+						<th>Status Projet</th>
+						<th>Status Tâche</th>
 						<th>Action</th>
 					</tr>
 				</thead>

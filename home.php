@@ -8,7 +8,13 @@ if($_SESSION['login_type'] != 1)
  <div class="col-12">
           <div class="card">
             <div class="card-body">
-              Bienvenue <?php echo $_SESSION['login_name'] ?>!
+              <center>
+              Bienvenue !!!
+              <marquee behavior="" direction="">
+              <?php echo $_SESSION['login_name'] ?> 
+              </marquee>
+
+              </center>
             </div>
           </div>
   </div>

@@ -118,7 +118,7 @@
 		$('#list').dataTable()
 	
 	$('.delete_project').click(function(){
-	_conf("Are you sure to delete this project?","delete_project",[$(this).attr('data-id')])
+	_conf("Etes-vous sure de vouloir supprimer ce projet?","delete_project",[$(this).attr('data-id')])
 	})
 	})
 	function delete_project($id){

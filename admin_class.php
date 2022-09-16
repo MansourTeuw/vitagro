@@ -186,7 +186,7 @@ Class Action {
 	}
 
 
-	function save_land() {
+	function save_land(){
 
 		extract($_POST);
 		$data = "";
@@ -194,7 +194,7 @@ Class Action {
 		foreach($_POST as $k => $v) {
 			if (!in_array($k, array('land_id', 'code_rep', 'code')) && !is_numeric($k)) {
 				if (empty($data)) {
-					$data .= " $k ='$v' ";
+					$data .= " $k='$v' ";
 				} else {
 					$data .= ", $k='$v' ";
 				}
@@ -213,12 +213,9 @@ Class Action {
 			exit;
 		}
 
-		if (isset($_FILES['img']) && $_FILES['img']['tmp_name'] != '') {
-
-			$fname = strtotime(date('y-m-d H:i')) . '_'.$_FILES['img']['name'];
-
+		if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
+			$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['img']['name'];
 			$move = move_uploaded_file($_FILES['img']['tmp_name'],'assets/uploads/'. $fname);
-
 			$data .= ", avatar = '$fname' ";
 		}
 
@@ -408,7 +405,7 @@ Class Action {
 		extract($_POST);
 		$data = "";
 		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id','user_ids')) && !is_numeric($k)){
+			if(!in_array($k, array('id','user_ids', 'land_ids')) && !is_numeric($k)){
 				if($k == 'description')
 					$v = htmlentities(str_replace("'","&#x2019;",$v));
 				if(empty($data)){
@@ -420,6 +417,8 @@ Class Action {
 		}
 		if(isset($user_ids)){
 			$data .= ", user_ids='".implode(',',$user_ids)."' ";
+			$data .= ", land_ids='".implode(',',$land_ids)."' ";
+
 		}
 		// echo $data;exit;
 		if(empty($id)){
@@ -442,7 +441,7 @@ Class Action {
 		extract($_POST);
 		$data = "";
 		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id')) && !is_numeric($k)){
+			if(!in_array($k, array('id', 'user_ids')) && !is_numeric($k)){
 				if($k == 'description')
 					$v = htmlentities(str_replace("'","&#x2019;",$v));
 				if(empty($data)){
@@ -452,6 +451,14 @@ Class Action {
 				}
 			}
 		}
+
+		if(isset($user_ids)){
+			$data .= ", user_ids='".implode(',',$user_ids)."' ";
+			// $data .= ", land_ids='".implode(',',$land_ids)."' ";
+
+		}
+
+
 		if(empty($id)){
 			$save = $this->db->query("INSERT INTO tasks_list set $data");
 		}else{

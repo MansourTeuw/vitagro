@@ -63,11 +63,11 @@
                 </a>
           </li>
           <?php if($_SESSION['login_type'] != 3): ?>
-           <li class="nav-item">
+           <!-- <li class="nav-item">
                 <a href="./index.php?page=reports" class="nav-link nav-reports">
                   <i class="fas fa-th-list nav-icon"></i>
                   <p>Rapport</p>
-                </a>
+                </a> -->
           </li>
           <?php endif; ?>
           <?php if($_SESSION['login_type'] == 1): ?>
@@ -98,11 +98,12 @@
 
           <?php if($_SESSION['login_type'] == 1): ?>
           <li class="nav-item">
-            <a href="#" class="nav-link nav-edit_user">
-              <i class="nav-icon fa-solid fa-mountain-sun"></i>
-              <!-- <i class="fa-solid fa-mountain-sun"></i> -->
+            <a href="#" class="nav-link">
+              <!-- <i class="nav-icon fa-solid fa-mountain-sun"></i> -->
+              <i class="nav-icon fa fa-tree"></i>
+
               <p>
-                Espaces
+                 Espaces
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

@@ -42,7 +42,7 @@
         	<?php if($_SESSION['login_type'] == 1 ): ?>
            <div class="col-md-6">
             <div class="form-group">
-              <label for="" class="control-label">Manager</label>
+              <label for="" class="control-label">Chef De Projet</label>
               <select class="form-control form-control-sm select2" name="manager_id">
               	<option></option>
               	<?php 
@@ -64,7 +64,7 @@
               	$land = $conn->query("SELECT * FROM land order by land_title asc ");
               	while($row= $land->fetch_assoc()):
               	?>
-              	<option value="<?php echo $row['id'] ?>" <?php echo isset($land_ids) && in_array($row['id'],explode(',',$land_ids)) ? "selected" : '' ?>><?php echo ucwords($row['land_title']) ?></option>
+              	<option value="<?php echo $row['land_id'] ?>" <?php echo isset($land_ids) && in_array($row['land_id'],explode(',',$land_ids)) ? "selected" : '' ?>><?php echo ucwords($row['land_title']) ?></option>
               	<?php endwhile; ?>
               </select>
             </div>
@@ -114,6 +114,10 @@
     	</div>
 	</div>
 </div>
+
+
+
+
 <script>
 	$('#manage-project').submit(function(e){
 		e.preventDefault()
@@ -128,7 +132,7 @@
 		    type: 'POST',
 			success:function(resp){
 				if(resp == 1){
-					alert_toast('Parcelle/Bassin enrégistré avec succès!!!',"success");
+					alert_toast('Projet ajouté avec succès!!!',"success");
 					setTimeout(function(){
 						location.href = 'index.php?page=project_list'
 					},2000)

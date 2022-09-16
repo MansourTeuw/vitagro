@@ -20,13 +20,16 @@ header("location:index.php?page=home");
 ?>
 <?php include 'header.php' ?>
 <body class="hold-transition login-page bg-black">
-<div class="login-box">
+<div class="login-box" style="border: 3px dotted white; width:fit-content; padding: 15px;">
   <div class="login-logo">
-    <a href="#" class="text-white"><b> - Admin</b></a>
+    <img src="img/vitagro.png" alt="" width="50%" height="70%" style="margin-bottom: 20px;">
+    <center>
+      <marquee behavior="" direction="">Système de Gestion Automatisée des Parcelles.</marquee>
+    </center>
   </div>
   <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
+  <div class="card" style="width: 600px;">
+    <div class="card-body login-card-body" >
       <form action="" id="login-form">
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="email" required placeholder="Email">
@@ -37,7 +40,7 @@ header("location:index.php?page=home");
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" required placeholder="Password">
+          <input type="password" class="form-control" name="password" required placeholder="Mot de Passe">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -49,13 +52,16 @@ header("location:index.php?page=home");
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Se souvenir de moi
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+
+            <button type="submit" class="btn btn-primary btn-block btn-sm">Sign In</button>
+            <button type="reset" class="btn btn-danger btn-block btn-sm">Vider</button>
+
           </div>
           <!-- /.col -->
         </div>
@@ -85,7 +91,7 @@ header("location:index.php?page=home");
         if(resp == 1){
           location.href ='index.php?page=home';
         }else{
-          $('#login-form').prepend('<div class="alert alert-danger">Username or password is incorrect.</div>')
+          $('#login-form').prepend('<div class="alert alert-danger">Mot de Passe ou Identifiant Incorrect!</div>')
           end_load();
         }
       }

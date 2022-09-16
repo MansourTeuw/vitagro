@@ -81,6 +81,7 @@ CREATE TABLE `tasks_list` (
   `project_id` int(30) NOT NULL,
   `task` varchar(200) NOT NULL,
   `description` text NOT NULL,
+  /* `user_ids` text, */
   `status` tinyint(4) NOT NULL,
   `date_created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

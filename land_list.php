@@ -28,7 +28,7 @@
 						<th class="text-center"><?php echo $i++ ?></th>
 						<td><b><?php echo ucwords($row['land_title']) ?></b></td>
 						<td><b><?php echo $row['land_dimension'] ?></b></td>
-						<td><b><?php echo $type[$row['type']] ?></b></td>
+						<td><b><?php echo $type[$row['land_type']] ?></b></td>
 						<td class="text-center">
 							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 		                      Action
@@ -52,7 +52,7 @@
 	$(document).ready(function(){
 		$('#land_list').dataTable()
 	$('.view_land').click(function(){
-		uni_modal("<i class='fa fa-id-card'></i> User Details","view_land.php?id="+$(this).attr('data-id'))
+		uni_modal("<i class='fa fa-id-card'></i> Details Parcelles/Bassins","view_land.php?id="+$(this).attr('data-id'))
 	})
 	$('.delete_land').click(function(){
 	_conf("Are you sure to delete this user?","delete_land",[$(this).attr('data-id')])
@@ -66,7 +66,7 @@
 			data:{id:$land_id},
 			success:function(resp){
 				if(resp==1){
-					alert_toast("Data successfully deleted",'success')
+					alert_toast("Parcelle/Bassin Supprimé avec succès",'success')
 					setTimeout(function(){
 						location.reload()
 					},1500)

@@ -1,6 +1,6 @@
 <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-primary navbar-dark ">
-    <!-- Left navbar links -->
+    <!-- Laissez ce champ vide si vous ne voulez pas changer de mot de passe. -->
     <ul class="navbar-nav">
       <?php if(isset($_SESSION['login_id'])): ?>
       <li class="nav-item">
@@ -24,6 +24,8 @@
               <span>
                 <div class="d-felx badge-pill">
                   <span class="fa fa-user mr-2"></span>
+                  <span>
+                  </span>
                   <span><b><?php echo ucwords($_SESSION['login_firstname']) ?></b></span>
                   <span class="fa fa-angle-down ml-2"></span>
                 </div>

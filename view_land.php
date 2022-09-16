@@ -1,8 +1,8 @@
-<?php include 'db_connect.php' ?>
+<?php include 'db_connect.php'; ?>
 <?php
-if(isset($_GET['id'])){
+if(isset($_GET['land_id'])){
 	$type_arr = array('',"Parcelle","Bassin");
-	$qry = $conn->query("SELECT * FROM land where id = ".$_GET['id'])->fetch_array();
+	$qry = $conn->query("SELECT * FROM land where land_id = ".$_GET['land_id'])->fetch_array();
 foreach($qry as $k => $v){
 	$$k = $v;
 }
