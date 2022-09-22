@@ -338,7 +338,7 @@ Class Action {
 
 	function delete_land(){
 		extract($_POST);
-		$delete = $this->db->query("DELETE FROM land where land_id = ".$land_id);
+		$delete = $this->db->query("DELETE FROM land where land_id = ".$id);
 		if($delete)
 			return 1;
 	}

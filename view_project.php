@@ -101,7 +101,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 							while($row=$members->fetch_assoc()):
 						?>
                         <li>
-                            <img src="assets/uploads/<?php echo $row['avatar'] ?>" alt="User Image">
+                            <img src="assets/uploads/<?php echo $row['avatar'] ?>" alt="User Image"><br>
                             <a class="userss-list-name"
                                 href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
                             <!-- <span class="userss-list-date">Today</span> -->
@@ -237,12 +237,13 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <!-- <div class="card-header">
-					<b>Members Progress/Activity</b>
-					<div class="card-tools">
-						<button class="btn btn-primary bg-gradient-primary btn-sm" type="button" id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
-					</div>
-				</div> -->
+                <div class="card-header">
+                    <b>Members Progress/Activity</b>
+                    <div class="card-tools">
+                        <button class="btn btn-primary bg-gradient-primary btn-sm" type="button"
+                            id="new_productivity"><i class="fa fa-plus"></i> New Productivity</button>
+                    </div>
+                </div>
                 <div class="card-body">
                     <?php 
 					$progress = $conn->query("SELECT p.*,concat(u.firstname,' ',u.lastname) as uname,u.avatar,t.task FROM users_productivity p inner join userss u on u.id = p.user_id inner join tasks_list t on t.id = p.task_id where p.project_id = $id order by unix_timestamp(p.date_created) desc ");
@@ -331,6 +332,12 @@ $('.edit_task').click(function() {
 $('.view_task').click(function() {
     uni_modal("Détail Des Tâche", "view_task.php?id=" + $(this).attr('data-id'), "mid-large")
 })
+
+$('.delete_task').click(function() {
+    _conf("Etes-vous sure de vouloir supprimer cette Tâche ?", "delete_task", [$(this).attr(
+        'data-id')])
+})
+
 $('#new_productivity').click(function() {
     uni_modal("<i class='fa fa-plus'></i> New Progress", "manage_progress.php?pid=<?php echo $id ?>", 'large')
 })
@@ -341,6 +348,30 @@ $('.manage_progress').click(function() {
 $('.delete_progress').click(function() {
     _conf("Are you sure to delete this progress?", "delete_progress", [$(this).attr('data-id')])
 })
+
+
+function delete_task($id) {
+    start_load()
+    $.ajax({
+        url: 'ajax.php?action=delete_task',
+        method: 'POST',
+        data: {
+            id: $id
+        },
+        success: function(resp) {
+            if (resp == 1) {
+                alert_toast("Tâche supprimée avec succès", 'success')
+                setTimeout(function() {
+                    location.reload()
+                }, 1500)
+
+            }
+        }
+    })
+}
+
+
+
 
 function delete_progress($id) {
     start_load()

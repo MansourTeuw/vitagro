@@ -1,39 +1,53 @@
-<?php include'db_connect.php' ?>
+<?php
+ include'db_connect.php';
+
+ $qry = $conn->query("SELECT * FROM tasks_list")->fetch_array();
+
+//  $qry = $conn->query("SELECT t.*,u.concat(firstname,' ',lastname) as name FROM tasks_list t inner join userss u on u.id = t.user_ids order by u.name asc");
+
+
+foreach($qry as $k => $v){
+	$$k = $v;
+}
+
+
+ ?>
 <div class="col-lg-12">
-	<div class="card card-outline card-success">
-		<div class="card-header">
-			<?php if($_SESSION['login_type'] != 3): ?>
-			<!-- <div class="card-tools">
+    <div class="card card-outline card-success">
+        <div class="card-header">
+            <?php if($_SESSION['login_type'] != 3): ?>
+            <!-- <div class="card-tools">
 				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=new_project"><i class="fa fa-plus"></i> Ajouter Tâche</a>
 			</div> -->
             <?php endif; ?>
-		</div>
-		<div class="card-body">
-			<table class="table tabe-hover table-condensed" id="list">
-				<colgroup>
-					<col width="5%">
-					<col width="15%">
-					<col width="20%">
-					<col width="15%">
-					<col width="15%">
-					<col width="10%">
-					<col width="10%">
-					<col width="10%">
-				</colgroup>
-				<thead>
-					<tr>
-						<th class="text-center">#</th>
-						<th>Projet</th>
-						<th>Tâche</th>
-						<th>Projet Démarré</th>
-						<th>Projet Dépassé</th>
-						<th>Status Projet</th>
-						<th>Status Tâche</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
+        </div>
+        <div class="card-body">
+            <table class="table tabe-hover table-condensed" id="list">
+                <colgroup>
+                    <col width="5%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Projet</th>
+                        <th>Tâche</th>
+                        <th>Assignée à</th>
+                        <!-- <th>Projet Démarré</th>
+                        <th>Projet Dépassé</th>
+                        <th>Status Projet</th>
+                        <th>Status Tâche</th>
+                        <th>Action</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
 					$i = 1;
 					$where = "";
 					if($_SESSION['login_type'] == 2){
@@ -65,19 +79,48 @@
 
 
 					?>
-					<tr>
-						<td class="text-center"><?php echo $i++ ?></td>
-						<td>
-							<p><b><?php echo ucwords($row['pname']) ?></b></p>
-						</td>
-						<td>
-							<p><b><?php echo ucwords($row['task']) ?></b></p>
-							<p class="truncate"><?php echo strip_tags($desc) ?></p>
-						</td>
-						<td><b><?php echo date("M d, Y",strtotime($row['start_date'])) ?></b></td>
-						<td><b><?php echo date("M d, Y",strtotime($row['end_date'])) ?></b></td>
-						<td class="text-center">
-							<?php
+
+
+                    <tr>
+                        <td class="text-center"><?php echo $i++ ?></td>
+                        <td>
+                            <p><b><?php echo ucwords($row['pname']) ?></b></p>
+                        </td>
+                        <td>
+                            <p><b><?php echo ucwords($row['task']) ?></b></p>
+                            <p class="truncate"><?php echo strip_tags($desc) ?></p>
+                        </td>
+                        <td>
+                            <?php 
+						if(!empty($user_ids)):
+							$members = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM userss where id in ($user_ids) order by concat(firstname,' ',lastname) asc");
+							while($row=$members->fetch_assoc()):
+						?>
+
+                            <img class="user-task-image" src="assets/uploads/<?php echo $row['avatar'] ?>"
+                                alt="User Image">
+                            <a class="users-list-name" href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
+                            <!-- <span class="users-list-date">Today</span> -->
+
+                            <?php 
+							endwhile;
+						endif; ?>
+                        </td>
+
+                        <style>
+                        .user-task-image {
+                            width: 50%;
+                            display: flex;
+                        }
+                        </style>
+
+
+
+                        <td><b><?php /* echo date("M d, Y",strtotime($row['start_date']))*/ ?></b></td>
+                        <td><b><?php /*echo date("M d, Y",strtotime($row['end_date'])) */?></b></td>
+                        <td class="text-center">
+                            <?php
+							  /*
 							  if($stat[$row['pstatus']] =='Pending'){
 							  	echo "<span class='badge badge-secondary'>{$stat[$row['pstatus']]}</span>";
 							  }elseif($stat[$row['pstatus']] =='Started'){
@@ -91,64 +134,75 @@
 							  }elseif($stat[$row['pstatus']] =='Done'){
 							  	echo "<span class='badge badge-success'>{$stat[$row['pstatus']]}</span>";
 							  }
+							  */
 							?>
-						</td>
-						<td>
-                        	<?php 
-                        	if($row['status'] == 1){
+                        </td>
+                        <td>
+                            <?php 
+                        	/*if($row['status'] == 1){
 						  		echo "<span class='badge badge-secondary'>Pending</span>";
                         	}elseif($row['status'] == 2){
 						  		echo "<span class='badge badge-primary'>On-Progress</span>";
                         	}elseif($row['status'] == 3){
 						  		echo "<span class='badge badge-success'>Done</span>";
-                        	}
+                        	}*/
                         	?>
                         </td>
-						<td class="text-center">
-							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-		                      Action
-		                    </button>
-			                    <div class="dropdown-menu" style="">
-			                      <a class="dropdown-item new_productivity" data-pid = '<?php echo $row['pid'] ?>' data-tid = '<?php echo $row['id'] ?>'  data-task = '<?php echo ucwords($row['task']) ?>'  href="javascript:void(0)">Add Productivity</a>
-								</div>
-						</td>
-					</tr>	
-				<?php endwhile; ?>
-				</tbody>
-			</table>
-		</div>
-	</div>
+                        <td class="text-center">
+                            <!-- <button type="button"
+                                class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="true">
+                                Action
+                            </button> -->
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item new_productivity" data-pid='<?php echo $row['pid'] ?>'
+                                    data-tid='<?php echo $row['id'] ?>' data-task='<?php echo ucwords($row['task']) ?>'
+                                    href="javascript:void(0)">Add Productivity</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <style>
-	table p{
-		margin: unset !important;
-	}
-	table td{
-		vertical-align: middle !important
-	}
+table p {
+    margin: unset !important;
+}
+
+table td {
+    vertical-align: middle !important
+}
 </style>
 <script>
-	$(document).ready(function(){
-		$('#list').dataTable()
-	$('.new_productivity').click(function(){
-		uni_modal("<i class='fa fa-plus'></i> New Progress for: "+$(this).attr('data-task'),"manage_progress.php?pid="+$(this).attr('data-pid')+"&tid="+$(this).attr('data-tid'),'large')
-	})
-	})
-	function delete_project($id){
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=delete_project',
-			method:'POST',
-			data:{id:$id},
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Data successfully deleted",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
+$(document).ready(function() {
+    $('#list').dataTable()
+    $('.new_productivity').click(function() {
+        uni_modal("<i class='fa fa-plus'></i> New Progress for: " + $(this).attr('data-task'),
+            "manage_progress.php?pid=" + $(this).attr('data-pid') + "&tid=" + $(this).attr(
+                'data-tid'), 'large')
+    })
+})
 
-				}
-			}
-		})
-	}
+function delete_project($id) {
+    start_load()
+    $.ajax({
+        url: 'ajax.php?action=delete_project',
+        method: 'POST',
+        data: {
+            id: $id
+        },
+        success: function(resp) {
+            if (resp == 1) {
+                alert_toast("Data successfully deleted", 'success')
+                setTimeout(function() {
+                    location.reload()
+                }, 1500)
+
+            }
+        }
+    })
+}
 </script>
