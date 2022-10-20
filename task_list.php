@@ -6,9 +6,11 @@
 //  $qry = $conn->query("SELECT t.*,u.concat(firstname,' ',lastname) as name FROM tasks_list t inner join userss u on u.id = t.user_ids order by u.name asc");
 
 
+
 foreach($qry as $k => $v){
-	$$k = $v;
+    $$k = $v;
 }
+
 
 
  ?>
@@ -36,8 +38,8 @@ foreach($qry as $k => $v){
                 <thead>
                     <tr>
                         <th class="text-center">#</th>
-                        <th>Projet</th>
-                        <th>Tâche</th>
+                        <th>Activités</th>
+                        <th>Tâches</th>
                         <th>Assignée à</th>
                         <!-- <th>Projet Démarré</th>
                         <th>Projet Dépassé</th>
@@ -56,7 +58,7 @@ foreach($qry as $k => $v){
 						$where = " where concat('[',REPLACE(p.user_ids,',','],['),']') LIKE '%[{$_SESSION['login_id']}]%' ";
 					}
 					
-					$stat = array("Pending","Started","On-Progress","On-Hold","Over Due","Done");
+					$stat = array("Suspendu","Commencé","On-Progress","On-Hold","Over Due","Done");
 					$qry = $conn->query("SELECT t.*,p.name as pname,p.start_date,p.status as pstatus, p.end_date,p.id as pid FROM tasks_list t inner join proj_listt p on p.id = t.project_id $where order by p.name asc");
 					while($row= $qry->fetch_assoc()):
 						$trans = get_html_translation_table(HTML_ENTITIES,ENT_QUOTES);
@@ -95,12 +97,19 @@ foreach($qry as $k => $v){
 						if(!empty($user_ids)):
 							$members = $conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM userss where id in ($user_ids) order by concat(firstname,' ',lastname) asc");
 							while($row=$members->fetch_assoc()):
+
+                               
 						?>
 
-                            <img class="user-task-image" src="assets/uploads/<?php echo $row['avatar'] ?>"
-                                alt="User Image">
-                            <a class="users-list-name" href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
-                            <!-- <span class="users-list-date">Today</span> -->
+
+
+                            <li>
+                                <img class="user-task-image" src="assets/uploads/<?php echo $row['avatar'] ?>"
+                                    alt="User Image">
+                                <a class="users-list-name"
+                                    href="javascript:void(0)"><?php echo ucwords($row['name']) ?></a>
+                                <!-- <span class="users-list-date">Today</span> -->
+                            </li>
 
                             <?php 
 							endwhile;
@@ -121,9 +130,9 @@ foreach($qry as $k => $v){
                         <td class="text-center">
                             <?php
 							  /*
-							  if($stat[$row['pstatus']] =='Pending'){
+							  if($stat[$row['pstatus']] =='Suspendu'){
 							  	echo "<span class='badge badge-secondary'>{$stat[$row['pstatus']]}</span>";
-							  }elseif($stat[$row['pstatus']] =='Started'){
+							  }elseif($stat[$row['pstatus']] =='Commencé'){
 							  	echo "<span class='badge badge-primary'>{$stat[$row['pstatus']]}</span>";
 							  }elseif($stat[$row['pstatus']] =='On-Progress'){
 							  	echo "<span class='badge badge-info'>{$stat[$row['pstatus']]}</span>";
@@ -140,7 +149,7 @@ foreach($qry as $k => $v){
                         <td>
                             <?php 
                         	/*if($row['status'] == 1){
-						  		echo "<span class='badge badge-secondary'>Pending</span>";
+						  		echo "<span class='badge badge-secondary'>Suspendu</span>";
                         	}elseif($row['status'] == 2){
 						  		echo "<span class='badge badge-primary'>On-Progress</span>";
                         	}elseif($row['status'] == 3){
@@ -154,7 +163,7 @@ foreach($qry as $k => $v){
                                 data-toggle="dropdown" aria-expanded="true">
                                 Action
                             </button> -->
-                            <div class="dropdown-menu" style="">
+                            <div class="dropdown-menu">
                                 <a class="dropdown-item new_productivity" data-pid='<?php echo $row['pid'] ?>'
                                     data-tid='<?php echo $row['id'] ?>' data-task='<?php echo ucwords($row['task']) ?>'
                                     href="javascript:void(0)">Add Productivity</a>

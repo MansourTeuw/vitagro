@@ -29,7 +29,7 @@
                 <tbody>
                 <?php
                 $i = 1;
-                $stat = array("Pending","Started","On-Progress","On-Hold","Over Due","Done");
+                $stat = array("Suspendu","Commencé","On-Progress","On-Hold","Over Due","Done");
                 $where = "";
                 if($_SESSION['login_type'] == 2){
                   $where = " where manager_id = '{$_SESSION['login_id']}' ";
@@ -87,9 +87,9 @@
                       </td>
                       <td class="project-state">
                           <?php
-                            if($stat[$row['status']] =='Pending'){
+                            if($stat[$row['status']] =='Suspendu'){
                               echo "<span class='badge badge-secondary'>{$stat[$row['status']]}</span>";
-                            }elseif($stat[$row['status']] =='Started'){
+                            }elseif($stat[$row['status']] =='Commencé'){
                               echo "<span class='badge badge-primary'>{$stat[$row['status']]}</span>";
                             }elseif($stat[$row['status']] =='On-Progress'){
                               echo "<span class='badge badge-info'>{$stat[$row['status']]}</span>";

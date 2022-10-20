@@ -206,7 +206,7 @@ Class Action {
 
 		}
 
-		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$title' ".(!empty($land_id) ? " AND land_id != {$land_id} " : ''))->num_rows;
+		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$land_title' ".(!empty($land_id) ? " AND land_id != {$land_id} " : ''))->num_rows;
 
 		if ($check > 0) {
 			return 2;
@@ -251,7 +251,7 @@ Class Action {
 			}
 		}
 
-		$check = $this->db->query("SELECT * FROM land where land_title ='$title' ".(!empty($land_id) ? " and land_id != {$land_id} " : ''))->num_rows;
+		$check = $this->db->query("SELECT * FROM land where land_title ='$land_title' ".(!empty($land_id) ? " and land_id != {$land_id} " : ''))->num_rows;
 		if($check > 0){
 			return 2;
 			exit;
@@ -303,7 +303,7 @@ Class Action {
 			}
 		}
 
-		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$title' ". (!empty($land_id) ? " AND land_id != {$land_id}" : ''))->num_rows;
+		$check = $this->db->query("SELECT * FROM land WHERE land_title = '$land_title' ". (!empty($land_id) ? " AND land_id != {$land_id}" : ''))->num_rows;
 
 		if ($check > 0) {
 			return 2;

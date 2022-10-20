@@ -1,37 +1,38 @@
 <?php include'db_connect.php' ?>
 <div class="col-lg-12">
-	<div class="card card-outline card-success">
-		<div class="card-header">
+    <div class="card card-outline card-success">
+        <div class="card-header">
             <?php if($_SESSION['login_type'] != 3): ?>
-			<div class="card-tools">
-				<a class="btn btn-block btn-sm btn-default btn-flat border-primary" href="./index.php?page=new_project"><i class="fa fa-plus"></i> Ajouter Projet</a>
-			</div>
+            <div class="card-tools">
+                <a class="btn btn-block btn-sm btn-default btn-flat border-primary"
+                    href="./index.php?page=new_project"><i class="fa fa-plus"></i> Ajouter Activité</a>
+            </div>
             <?php endif; ?>
-		</div>
-		<div class="card-body">
-			<table class="table tabe-hover table-condensed" id="list">
-				<colgroup>
-					<col width="5%">
-					<col width="35%">
-					<col width="15%">
-					<col width="15%">
-					<col width="20%">
-					<col width="10%">
-				</colgroup>
-				<thead>
-					<tr>
-						<th class="text-center">#</th>
-						<th>Project</th>
-						<th>Date Started</th>
-						<th>Due Date</th>
-						<th>Status</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
+        </div>
+        <div class="card-body">
+            <table class="table tabe-hover table-condensed" id="list">
+                <colgroup>
+                    <col width="5%">
+                    <col width="35%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Activité</th>
+                        <th>Date de début</th>
+                        <th>Date de Fin</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
 					$i = 1;
-					$stat = array("Pending","Started","On-Progress","On-Hold","Over Due","Done");
+					$stat = array("Suspendu","Commencé","En cours...","En attente","En retard","Terminé");
 					$where = "";
 					if($_SESSION['login_type'] == 2){
 						$where = " where manager_id = '{$_SESSION['login_id']}' ";
@@ -59,83 +60,94 @@
 						$row['status'] = 4;
 						endif;
 					?>
-					<tr>
-						<th class="text-center"><?php echo $i++ ?></th>
-						<td>
-							<p><b><?php echo ucwords($row['name']) ?></b></p>
-							<p class="truncate"><?php echo strip_tags($desc) ?></p>
-						</td>
-						<td><b><?php echo date("M d, Y",strtotime($row['start_date'])) ?></b></td>
-						<td><b><?php echo date("M d, Y",strtotime($row['end_date'])) ?></b></td>
-						<td class="text-center">
-							<?php
-							  if($stat[$row['status']] =='Pending'){
+                    <tr>
+                        <th class="text-center"><?php echo $i++ ?></th>
+                        <td>
+                            <p><b><?php echo ucwords($row['name']) ?></b></p>
+                            <p class="truncate"><?php echo strip_tags($desc) ?></p>
+                        </td>
+                        <td><b><?php echo date("M d, Y",strtotime($row['start_date'])) ?></b></td>
+                        <td><b><?php echo date("M d, Y",strtotime($row['end_date'])) ?></b></td>
+                        <td class="text-center">
+                            <?php
+							  if($stat[$row['status']] =='Suspendu'){
 							  	echo "<span class='badge badge-secondary'>{$stat[$row['status']]}</span>";
-							  }elseif($stat[$row['status']] =='Started'){
+							  }elseif($stat[$row['status']] =='Commencé'){
 							  	echo "<span class='badge badge-primary'>{$stat[$row['status']]}</span>";
-							  }elseif($stat[$row['status']] =='On-Progress'){
+							  }elseif($stat[$row['status']] =='En cours...'){
 							  	echo "<span class='badge badge-info'>{$stat[$row['status']]}</span>";
-							  }elseif($stat[$row['status']] =='On-Hold'){
+							  }elseif($stat[$row['status']] =='En attente'){
 							  	echo "<span class='badge badge-warning'>{$stat[$row['status']]}</span>";
-							  }elseif($stat[$row['status']] =='Over Due'){
+							  }elseif($stat[$row['status']] =='En retard'){
 							  	echo "<span class='badge badge-danger'>{$stat[$row['status']]}</span>";
-							  }elseif($stat[$row['status']] =='Done'){
+							  }elseif($stat[$row['status']] =='Terminé'){
 							  	echo "<span class='badge badge-success'>{$stat[$row['status']]}</span>";
 							  }
 							?>
-						</td>
-						<td class="text-center">
-							<button type="button" class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-		                      Action
-		                    </button>
-		                    <div class="dropdown-menu" style="">
-		                      <a class="dropdown-item view_project" href="./index.php?page=view_project&id=<?php echo $row['id'] ?>" data-id="<?php echo $row['id'] ?>">Voir</a>
-		                      <div class="dropdown-divider"></div>
-		                      <?php if($_SESSION['login_type'] != 3): ?>
-		                      <a class="dropdown-item" href="./index.php?page=edit_project&id=<?php echo $row['id'] ?>">Modifier</a>
-		                      <div class="dropdown-divider"></div>
-		                      <a class="dropdown-item delete_project" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">Supprimer</a>
-		                  <?php endif; ?>
-		                    </div>
-						</td>
-					</tr>	
-				<?php endwhile; ?>
-				</tbody>
-			</table>
-		</div>
-	</div>
+                        </td>
+                        <td class="text-center">
+                            <button type="button"
+                                class="btn btn-default btn-sm btn-flat border-info wave-effect text-info dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="true">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a class="dropdown-item view_project"
+                                    href="./index.php?page=view_project&id=<?php echo $row['id'] ?>"
+                                    data-id="<?php echo $row['id'] ?>">Voir</a>
+                                <div class="dropdown-divider"></div>
+                                <?php if($_SESSION['login_type'] != 3): ?>
+                                <a class="dropdown-item"
+                                    href="./index.php?page=edit_project&id=<?php echo $row['id'] ?>">Modifier</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item delete_project" href="javascript:void(0)"
+                                    data-id="<?php echo $row['id'] ?>">Supprimer</a>
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <style>
-	table p{
-		margin: unset !important;
-	}
-	table td{
-		vertical-align: middle !important
-	}
+table p {
+    margin: unset !important;
+}
+
+table td {
+    vertical-align: middle !important
+}
 </style>
 <script>
-	$(document).ready(function(){
-		$('#list').dataTable()
-	
-	$('.delete_project').click(function(){
-	_conf("Etes-vous sure de vouloir supprimer ce projet?","delete_project",[$(this).attr('data-id')])
-	})
-	})
-	function delete_project($id){
-		start_load()
-		$.ajax({
-			url:'ajax.php?action=delete_project',
-			method:'POST',
-			data:{id:$id},
-			success:function(resp){
-				if(resp==1){
-					alert_toast("Data successfully deleted",'success')
-					setTimeout(function(){
-						location.reload()
-					},1500)
+$(document).ready(function() {
+    $('#list').dataTable()
 
-				}
-			}
-		})
-	}
+    $('.delete_project').click(function() {
+        _conf("Etes-vous sure de vouloir supprimer ce projet?", "delete_project", [$(this).attr(
+            'data-id')])
+    })
+})
+
+function delete_project($id) {
+    start_load()
+    $.ajax({
+        url: 'ajax.php?action=delete_project',
+        method: 'POST',
+        data: {
+            id: $id
+        },
+        success: function(resp) {
+            if (resp == 1) {
+                alert_toast("Activité supprimée avec succès", 'success')
+                setTimeout(function() {
+                    location.reload()
+                }, 1500)
+
+            }
+        }
+    })
+}
 </script>

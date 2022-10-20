@@ -4,7 +4,7 @@ $stat = array("Suspendu","Commencé","En cours...","En attente","En retard","Fin
 $qry = $conn->query("SELECT * FROM proj_listt where id = ".$_GET['id'])->fetch_array();
 foreach($qry as $k => $v){
 	$$k = $v;
-}
+} 
 $tprog = $conn->query("SELECT * FROM tasks_list where project_id = {$id}")->num_rows;
 $cprog = $conn->query("SELECT * FROM tasks_list where project_id = {$id} and status = 3")->num_rows;
 $prog = $tprog > 0 ? ($cprog/$tprog) * 100 : 0;
@@ -58,7 +58,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 									  	echo "<span class='badge badge-warning'>{$stat[$status]}</span>";
 									  }elseif($stat[$status] =='En retard'){
 									  	echo "<span class='badge badge-danger'>{$stat[$status]}</span>";
-									  }elseif($stat[$status] =='Fini'){
+									  }elseif($stat[$status] =='Terminé'){
 									  	echo "<span class='badge badge-success'>{$stat[$status]}</span>";
 									  }
 									?>
@@ -198,7 +198,7 @@ $manager = $manager->num_rows > 0 ? $manager->fetch_array() : array();
 			                        	}elseif($row['status'] == 2){
 									  		echo "<span class='badge badge-primary'>En cours...</span>";
 			                        	}elseif($row['status'] == 3){
-									  		echo "<span class='badge badge-success'>Fini</span>";
+									  		echo "<span class='badge badge-success'>Terminé</span>";
 			                        	}
 			                        	?>
                                     </td>
@@ -383,7 +383,7 @@ function delete_progress($id) {
         },
         success: function(resp) {
             if (resp == 1) {
-                alert_toast("Data successfully deleted", 'success')
+                alert_toast("Progression supprimée avec succès", 'success')
                 setTimeout(function() {
                     location.reload()
                 }, 1500)
